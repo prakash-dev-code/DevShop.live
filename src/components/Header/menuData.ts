@@ -3,19 +3,19 @@ import { Menu } from "@/types/Menu";
 export const menuData: Menu[] = [
   {
     id: 1,
-    title: "Popular",
+    title: "🔥 Popular",
     newTab: false,
     path: "/",
   },
   {
     id: 2,
-    title: "Mobiles",
+    title: "📱 Mobiles",
     newTab: false,
     path: "/shop-with-sidebar",
   },
   {
     id: 3,
-    title: "Fashion",
+    title: "👕 Fashion",
     newTab: false,
     path: "/contact",
     submenu: [
@@ -89,7 +89,7 @@ export const menuData: Menu[] = [
   },
   {
     id: 6,
-    title: "Electronics",
+    title: " 🖥️ Electronics ",
     newTab: false,
     path: "/",
     submenu: [
@@ -164,7 +164,7 @@ export const menuData: Menu[] = [
   
   {
     id: 7,
-    title: "Home & Ferniture",
+    title: "🏠 Home & Ferniture",
     newTab: false,
     path: "/",
     submenu: [
@@ -197,7 +197,7 @@ export const menuData: Menu[] = [
 
   {
     id: 8,
-    title: "Appliances",
+    title: "🧺 Appliances",
     newTab: false,
     path: "/contact",
   },

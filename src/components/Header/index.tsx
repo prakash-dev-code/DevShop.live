@@ -323,7 +323,7 @@ const Header = () => {
                             stickyMenu ? "xl:py-4" : "xl:py-6"
                           }`}
                         >
-                          {menuItem.title}
+                           {menuItem.title}
                         </Link>
                       </li>
                     )
