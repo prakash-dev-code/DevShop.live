@@ -9,19 +9,87 @@ export const menuData: Menu[] = [
   },
   {
     id: 2,
-    title: "Shop",
+    title: "Mobiles",
     newTab: false,
     path: "/shop-with-sidebar",
   },
   {
     id: 3,
-    title: "Contact",
+    title: "Fashion",
     newTab: false,
     path: "/contact",
+    submenu: [
+      {
+        id: 31,
+        title: "Shop With Sidebar",
+        newTab: false,
+        path: "/shop-with-sidebar",
+      },
+      {
+        id: 32,
+        title: "Shop Without Sidebar",
+        newTab: false,
+        path: "/shop-without-sidebar",
+      },
+      {
+        id: 34,
+        title: "Checkout",
+        newTab: false,
+        path: "/checkout",
+      },
+      {
+        id: 35,
+        title: "Cart",
+        newTab: false,
+        path: "/cart",
+      },
+      {
+        id: 36,
+        title: "Wishlist",
+        newTab: false,
+        path: "/wishlist",
+      },
+      {
+        id: 37,
+        title: "Sign in",
+        newTab: false,
+        path: "/signin",
+      },
+      {
+        id: 38,
+        title: "Sign up",
+        newTab: false,
+        path: "/signup",
+      },
+      {
+        id: 39,
+        title: "My Account",
+        newTab: false,
+        path: "/my-account",
+      },
+      {
+        id: 40,
+        title: "Contact",
+        newTab: false,
+        path: "/contact",
+      },
+      {
+        id: 41,
+        title: "Error",
+        newTab: false,
+        path: "/error",
+      },
+      {
+        id: 42,
+        title: "Mail Success",
+        newTab: false,
+        path: "/mail-success",
+      },
+    ],
   },
   {
     id: 6,
-    title: "pages",
+    title: "Electronics",
     newTab: false,
     path: "/",
     submenu: [
@@ -93,9 +161,10 @@ export const menuData: Menu[] = [
       },
     ],
   },
+  
   {
     id: 7,
-    title: "blogs",
+    title: "Home & Ferniture",
     newTab: false,
     path: "/",
     submenu: [
@@ -125,4 +194,12 @@ export const menuData: Menu[] = [
       },
     ],
   },
+
+  {
+    id: 8,
+    title: "Appliances",
+    newTab: false,
+    path: "/contact",
+  },
+  
 ];
