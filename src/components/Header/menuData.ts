@@ -24,10 +24,30 @@ export const menuData: Menu[] = [
         title: "Shop With Sidebar",
         newTab: false,
         path: "/shop-with-sidebar",
+        children: [
+        {
+          id: 311,
+          title: "Men's Fashion",
+          newTab: false,
+          path: "/shop-with-sidebar/mens-fashion"
+        },
+        {
+          id: 312,
+          title: "Women's Fashion",
+          newTab: false,
+          path: "/shop-with-sidebar/womens-fashion"
+        },
+        {
+          id: 313,
+          title: "Kid's Fashion",
+          newTab: false,
+          path: "/shop-with-sidebar/womens-fashion"
+        }
+      ]
       },
       {
         id: 32,
-        title: "Shop Without Sidebar",
+        title: "Mens Footwear",
         newTab: false,
         path: "/shop-without-sidebar",
       },
@@ -36,6 +56,26 @@ export const menuData: Menu[] = [
         title: "Checkout",
         newTab: false,
         path: "/checkout",
+        children: [
+          {
+            id: 311,
+            title: "Men's Fashion",
+            newTab: false,
+            path: "/shop-with-sidebar/mens-fashion"
+          },
+          {
+            id: 312,
+            title: "Women's Fashion",
+            newTab: false,
+            path: "/shop-with-sidebar/womens-fashion"
+          },
+          {
+            id: 313,
+            title: "Kid's Fashion",
+            newTab: false,
+            path: "/shop-with-sidebar/womens-fashion"
+          }
+        ]
       },
       {
         id: 35,
@@ -78,6 +118,26 @@ export const menuData: Menu[] = [
         title: "Error",
         newTab: false,
         path: "/error",
+        children: [
+          {
+            id: 311,
+            title: "Men's Fashion",
+            newTab: false,
+            path: "/shop-with-sidebar/mens-fashion"
+          },
+          {
+            id: 312,
+            title: "Women's Fashion",
+            newTab: false,
+            path: "/shop-with-sidebar/womens-fashion"
+          },
+          {
+            id: 313,
+            title: "Kid's Fashion",
+            newTab: false,
+            path: "/shop-with-sidebar/womens-fashion"
+          }
+        ]
       },
       {
         id: 42,

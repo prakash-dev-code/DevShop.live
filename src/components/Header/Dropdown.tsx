@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { MdOutlineNavigateNext } from "react-icons/md";
 
 const Dropdown = ({ menuItem, stickyMenu }) => {
+  console.log(menuItem, "MENU item");
   const [dropdownToggler, setDropdownToggler] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+
   const pathUrl = usePathname();
 
   return (
@@ -39,22 +43,41 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
 
       {/* <!-- Dropdown Start --> */}
       <ul
-        className={`dropdown ${dropdownToggler && "flex"} ${
+        className={`dropdown w-[300px] ${dropdownToggler && "flex "} ${
           stickyMenu
             ? "xl:group-hover:translate-y-0"
             : "xl:group-hover:translate-y-0"
         }`}
       >
-        {menuItem.submenu.map((item, i) => (
-          <li key={i}>
+        {menuItem.submenu.map((item) => (
+          <li key={item.id} className=" relative " onMouseEnter={() => setHoveredItem(item.id)}
+          onMouseLeave={() => setHoveredItem(null)}>
             <Link
               href={item.path}
               className={`flex text-custom-sm hover:text-blue hover:bg-gray-1 py-[7px] px-4.5 ${
-                pathUrl === item.path && "text-blue bg-gray-1"
-              } `}
+                pathUrl === item.path ? "text-blue bg-gray-1" : ""
+              }`}
+
             >
-              {item.title}
+              <div >{item.title} {item.children && <span><MdOutlineNavigateNext className="inline" /></span>}</div> 
             </Link>
+
+            {item.children && hoveredItem === item.id && (
+              <ul className=" bg-white absolute left-[50%]  transform -translate-y-1/2 ">
+                {item.children.map((child) => (
+                  <li key={child.id}>
+                    <Link
+                      href={child.path}
+                      className={`flex text-custom-sm hover:text-blue hover:bg-gray-1 py-[7px] px-4.5 ${
+                        pathUrl === child.path ? "text-blue bg-gray-1" : ""
+                      }`}
+                    >
+                      <div>{child.title}</div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))}
       </ul>
