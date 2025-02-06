@@ -73,7 +73,7 @@ const CustomSignIn = ({ options }) => {
           className={`select-items ${isOpen ? "" : "select-hide"}`}
           style={{ width: "200px" }}
         >
-          {options.slice(0, -1).map((option, index) => (
+          {options.map((option, index) => (
             <div
               key={index}
               onClick={() => handleOptionClick(option)}

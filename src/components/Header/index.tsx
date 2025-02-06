@@ -11,6 +11,11 @@ import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import Image from "next/image";
 import CustomSignIn from "./CustomSignIn";
 import { HiShoppingBag } from "react-icons/hi";
+import { FiLogIn } from "react-icons/fi";
+import { LuUserPlus } from "react-icons/lu";
+import { CgProfile } from "react-icons/cg";
+import { GoHeart } from "react-icons/go";
+import { IoGiftOutline } from "react-icons/io5";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -49,13 +54,15 @@ const Header = () => {
     { label: "Tablet", value: "7" },
   ];
 
+  
+
   const signInoptions = [
-    { label: "Sign In", value: "signin",icon: <HiShoppingBag color="blue" />},
-    { label: "Sign Up", value: "signup",icon: <HiShoppingBag color="blue" /> },
-    { label: "My Profile", value: "2",icon: <HiShoppingBag color="blue" /> },
-    { label: "Orders", value: "3",icon: <HiShoppingBag color="blue" /> },
-    { label: "Wishlist", value: "4" ,icon: <HiShoppingBag color="blue"/>},
-    { label: "Rewards", value: "5" ,icon: <HiShoppingBag color="blue"/>},
+    { label: "Sign In", value: "signin",icon: <FiLogIn size={18} color="blue" />},
+    { label: "Sign Up", value: "signup",icon: <LuUserPlus size={18} color="blue" /> },
+    { label: "My Profile", value: "2",icon: <CgProfile size={18} color="blue" /> },
+    { label: "Orders", value: "3",icon: <HiShoppingBag size={18} color="blue" /> },
+    { label: "Wishlist", value: "4" ,icon: <GoHeart size={18} color="blue"/>},
+    { label: "Rewards", value: "5" ,icon: <IoGiftOutline  size={18} color="blue"/>},
   ];
 
   return (
