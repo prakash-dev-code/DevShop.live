@@ -1,11 +1,13 @@
 // import { useRouter } from "next/router";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const CustomSignIn = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const router = useRouter()
+  const dropdownRef = useRef(null);
+
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -15,26 +17,23 @@ const CustomSignIn = ({ options }) => {
     setSelectedOption(option);
     router.push(option.value)
     toggleDropdown();
+    setIsOpen(false);
   };
   useEffect(() => {
-    // closing modal while clicking outside
-    function handleClickOutside(event) {
-      if (!event.target.closest(".dropdown-content")) {
-        toggleDropdown();
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
       }
-    }
+    };
 
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
   return (
     <>
-      <div className="relative">
+      <div className="relative" ref={dropdownRef}>
         <div
           className={` flex items-center gap-2.5 select-signIn whitespace-nowrap ${
             isOpen ? "select-arrow-active" : ""

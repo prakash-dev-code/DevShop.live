@@ -4,7 +4,7 @@ import Link from "next/link";
 import { MdOutlineNavigateNext } from "react-icons/md";
 
 const Dropdown = ({ menuItem, stickyMenu }) => {
-  console.log(menuItem, "MENU item");
+
   const [dropdownToggler, setDropdownToggler] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
 
@@ -43,7 +43,7 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
 
       {/* <!-- Dropdown Start --> */}
       <ul
-        className={`dropdown w-[300px] ${dropdownToggler && "flex "} ${
+        className={`dropdown w-[220px] ${dropdownToggler && "flex "} ${
           stickyMenu
             ? "xl:group-hover:translate-y-0"
             : "xl:group-hover:translate-y-0"
@@ -63,7 +63,8 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
             </Link>
 
             {item.children && hoveredItem === item.id && (
-              <ul className=" bg-white absolute left-[50%]  transform -translate-y-1/2 ">
+              <ul className="  dropdown min-w-[200px] bg-white absolute left-[100%]   transform -translate-y-1/3 " onMouseEnter={() => setHoveredItem(item.id)}
+              onMouseLeave={() => setHoveredItem(null)}>
                 {item.children.map((child) => (
                   <li key={child.id}>
                     <Link
