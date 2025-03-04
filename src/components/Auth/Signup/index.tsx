@@ -64,7 +64,7 @@ const Signup = () => {
                 Sign Up with Google
               </button>
 
-              <button className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2">
+              {/* <button className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2">
                 <svg
                   width="22"
                   height="22"
@@ -78,7 +78,7 @@ const Signup = () => {
                   />
                 </svg>
                 Sign Up with Github
-              </button>
+              </button> */}
             </div>
 
             <span className="relative z-1 block font-medium text-center mt-4.5">

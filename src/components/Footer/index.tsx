@@ -32,7 +32,7 @@ const Footer = () => {
                     />
                   </svg>
                 </span>
-                685 Market Street,Las Vegas, LA 95820,United States.
+                123 SG Highway, Ahmedabad, Gujarat 380015, India.
               </li>
 
               <li>
@@ -61,7 +61,7 @@ const Footer = () => {
                       fill="#3C50E0"
                     />
                   </svg>
-                  (+099) 532-786-9843
+                  (+91) 9644764505
                 </a>
               </li>
 
