@@ -1,8 +1,25 @@
+"use client";
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import { signUpSchema } from "@/shared/schemas/formSchema";
+import { useFormik } from "formik";
 import Link from "next/link";
 import React from "react";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 
 const Signup = () => {
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: toFormikValidationSchema(signUpSchema),
+    validateOnMount: false,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
   return (
     <>
       <Breadcrumb title={"Signup"} pages={["Signup"]} />
@@ -16,10 +33,8 @@ const Signup = () => {
               <p>Enter your detail below</p>
             </div>
 
-            
-
             <div className="mb-5.5">
-              <form>
+              <form onSubmit={formik.handleSubmit}>
                 <div className="mb-5">
                   <label htmlFor="name" className="block mb-2.5">
                     Full Name <span className="text-red">*</span>
@@ -29,9 +44,15 @@ const Signup = () => {
                     type="text"
                     name="name"
                     id="name"
+                    onChange={formik.handleChange}
+                    value={formik.values.name}
+                    onBlur={formik.handleBlur}
                     placeholder="Enter your full name"
                     className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                   />
+                  {formik.touched.name && formik.errors.name && (
+                    <p className="text-red text-sm">{formik.errors.name}</p>
+                  )}
                 </div>
 
                 <div className="mb-5">
@@ -43,9 +64,15 @@ const Signup = () => {
                     type="email"
                     name="email"
                     id="email"
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
+                    onBlur={formik.handleBlur}
                     placeholder="Enter your email address"
                     className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                   />
+                  {formik.touched.email && formik.errors.email && (
+          <p className="text-red text-sm">{formik.errors.email}</p>
+        )}
                 </div>
 
                 <div className="mb-5">
@@ -57,43 +84,59 @@ const Signup = () => {
                     type="password"
                     name="password"
                     id="password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                    onBlur={formik.handleBlur}
                     placeholder="Enter your password"
                     autoComplete="on"
                     className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                   />
+                  {formik.touched.password && formik.errors.password && (
+          <p className="text-red text-sm">{formik.errors.password}</p>
+        )}
                 </div>
 
                 <div className="mb-5.5">
-                  <label htmlFor="re-type-password" className="block mb-2.5">
-                    Re-type Password <span className="text-red">*</span>
+                  <label htmlFor="confirmPassword" className="block mb-2.5">
+                  Confirm Password <span className="text-red">*</span>
                   </label>
 
                   <input
                     type="password"
-                    name="re-type-password"
-                    id="re-type-password"
-                    placeholder="Re-type your password"
-                    autoComplete="on"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    placeholder="Confirm  password"
+                    // autoComplete="on"
+                    onChange={formik.handleChange}
+                    value={formik.values.confirmPassword}
+                    onBlur={formik.handleBlur}
                     className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                   />
+                  {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+          <p className="text-red text-sm">{formik.errors.confirmPassword}</p>
+        )}
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5"
+                  disabled={!formik.isValid || formik.isSubmitting}
+                  className={`w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 mt-7.5
+    ${
+      !formik.isValid || formik.isSubmitting
+        ? "opacity-50 cursor-not-allowed"
+        : "hover:bg-blue"
+    }`}
                 >
                   Create Account
                 </button>
-
-                
               </form>
             </div>
 
             <div className="flex flex-col gap-4.5">
-            <span className="relative z-1 block font-medium text-center mt-4.5">
-              <span className="block absolute -z-1 left-0 top-1/2 h-px w-full bg-gray-3"></span>
-              <span className="inline-block px-3 bg-white">Or</span>
-            </span>
+              <span className="relative z-1 block font-medium text-center mt-4.5">
+                <span className="block absolute -z-1 left-0 top-1/2 h-px w-full bg-gray-3"></span>
+                <span className="inline-block px-3 bg-white">Or</span>
+              </span>
               <button className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2">
                 <svg
                   width="20"
@@ -159,14 +202,14 @@ const Signup = () => {
             </div>
 
             <p className="text-center mt-6">
-                  Already have an account?
-                  <Link
-                    href="/signin"
-                    className="text-dark ease-out duration-200 hover:text-blue pl-2"
-                  >
-                    Sign in Now
-                  </Link>
-                </p>
+              Already have an account?
+              <Link
+                href="/signin"
+                className="text-dark ease-out duration-200 hover:text-blue pl-2"
+              >
+                Sign in Now
+              </Link>
+            </p>
           </div>
         </div>
       </section>
