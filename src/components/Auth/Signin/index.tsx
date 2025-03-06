@@ -1,8 +1,27 @@
+"use client";
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import { signInSchema } from "@/shared/schemas/formSchema";
+import { useFormik } from "formik";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import { BsEye } from "react-icons/bs";
+import { TbEyeClosed } from "react-icons/tb";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 
 const Signin = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: toFormikValidationSchema(signInSchema),
+    validateOnMount: false,
+    onSubmit: (values, { resetForm }) => {
+      console.log(values);
+      resetForm();
+    },
+  });
   return (
     <>
       <Breadcrumb title={"Signin"} pages={["Signin"]} />
@@ -17,7 +36,7 @@ const Signin = () => {
             </div>
 
             <div>
-              <form>
+              <form onSubmit={formik.handleSubmit}>
                 <div className="mb-5">
                   <label htmlFor="email" className="block mb-2.5">
                     Email
@@ -27,29 +46,59 @@ const Signin = () => {
                     type="email"
                     name="email"
                     id="email"
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
+                    onBlur={formik.handleBlur}
                     placeholder="Enter your email"
                     className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                   />
+                   {formik.touched.email && formik.errors.email && (
+                    <p className="text-red text-sm">{formik.errors.email}</p>
+                  )}
                 </div>
 
                 <div className="mb-5">
                   <label htmlFor="password" className="block mb-2.5">
                     Password
                   </label>
-
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="Enter your password"
-                    autoComplete="on"
-                    className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      id="password"
+                      onChange={formik.handleChange}
+                    value={formik.values.password}
+                    onBlur={formik.handleBlur}
+                      placeholder="Enter your password"
+                      // autoComplete="on"
+                      className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-dark-5 hover:text-dark-3"
+                    >
+                      {showPassword ? (
+                        <TbEyeClosed size={20} />
+                      ) : (
+                        <BsEye size={20} />
+                      )}
+                    </button>
+                  </div>
+                  {formik.touched.password && formik.errors.password && (
+                    <p className="text-red text-sm">{formik.errors.password}</p>
+                  )}
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5"
+                  disabled={!formik.isValid || formik.isSubmitting}
+                  className={`w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 mt-7.5
+    ${
+      !formik.isValid || formik.isSubmitting
+        ? "opacity-50 cursor-not-allowed"
+        : "hover:bg-blue"
+    }`}
                 >
                   Sign in to account
                 </button>
@@ -114,7 +163,7 @@ const Signin = () => {
                     Sign In with Google
                   </button>
 
-                  <button className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2">
+                  {/* <button className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2">
                     <svg
                       width="22"
                       height="22"
@@ -128,7 +177,7 @@ const Signin = () => {
                       />
                     </svg>
                     Sign Up with Github
-                  </button>
+                  </button> */}
                 </div>
 
                 <p className="text-center mt-6">

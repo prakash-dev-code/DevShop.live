@@ -5,7 +5,6 @@ import { useFormik } from "formik";
 import Link from "next/link";
 import React, { useState } from "react";
 import { BsEye } from "react-icons/bs";
-import { FiEyeOff } from "react-icons/fi";
 import { TbEyeClosed } from "react-icons/tb";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 
