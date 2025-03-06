@@ -22,8 +22,9 @@ const Signup = () => {
     },
     validationSchema: toFormikValidationSchema(signUpSchema),
     validateOnMount: false,
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
       console.log(values);
+      resetForm();
     },
   });
   return (
