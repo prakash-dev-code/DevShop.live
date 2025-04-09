@@ -1,10 +1,12 @@
 // import { useRouter } from "next/router";
+import { AppRoutes } from "@/constants/routes";
+import { useAppSelector } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 const CustomSignIn = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [selectedOption, setSelectedOption] = useState(null);
   const router = useRouter()
   const dropdownRef = useRef(null);
 
@@ -12,13 +14,24 @@ const CustomSignIn = ({ options }) => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+  const isLoggedIn = useAppSelector((state)=> state.auth.isLoggedIn)
 
   const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    router.push(option.value)
-    toggleDropdown();
+    const protectedRoutes = [AppRoutes.MyProfile, AppRoutes.Orders, AppRoutes.Wishlist, AppRoutes.Rewards];
+  
+    if (protectedRoutes.includes(option.value) && !isLoggedIn) {
+      const signInOption = options.find((opt) => opt.value === "/signin");
+      setSelectedOption(signInOption);
+      router.push("/signin");
+    } else {
+      setSelectedOption(option);
+      router.push(option.value);
+    }
+  
     setIsOpen(false);
   };
+
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
