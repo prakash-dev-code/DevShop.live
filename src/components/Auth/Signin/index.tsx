@@ -1,5 +1,6 @@
 "use client";
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import { useApi } from "@/services/apiServices";
 import { signInSchema } from "@/shared/schemas/formSchema";
 import { useFormik } from "formik";
 import Link from "next/link";
@@ -9,6 +10,7 @@ import { TbEyeClosed } from "react-icons/tb";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 
 const Signin = () => {
+  const { signIN } = useApi();
   const [showPassword, setShowPassword] = useState(false);
   const formik = useFormik({
     initialValues: {
@@ -17,9 +19,20 @@ const Signin = () => {
     },
     validationSchema: toFormikValidationSchema(signInSchema),
     validateOnMount: false,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       console.log(values);
-      resetForm();
+
+      try {
+        const data = {
+          email: values.email,
+          password: values.password,
+        };
+        const res = await signIN(data);
+        console.log(res, "res");
+        resetForm();
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
   return (
@@ -52,7 +65,7 @@ const Signin = () => {
                     placeholder="Enter your email"
                     className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                   />
-                   {formik.touched.email && formik.errors.email && (
+                  {formik.touched.email && formik.errors.email && (
                     <p className="text-red text-sm">{formik.errors.email}</p>
                   )}
                 </div>
@@ -67,8 +80,8 @@ const Signin = () => {
                       name="password"
                       id="password"
                       onChange={formik.handleChange}
-                    value={formik.values.password}
-                    onBlur={formik.handleBlur}
+                      value={formik.values.password}
+                      onBlur={formik.handleBlur}
                       placeholder="Enter your password"
                       // autoComplete="on"
                       className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
