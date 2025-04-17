@@ -4,14 +4,19 @@ import { useApi } from "@/services/apiServices";
 import { signInSchema } from "@/shared/schemas/formSchema";
 import { useFormik } from "formik";
 import Link from "next/link";
+import toast from "react-hot-toast"
 import React, { useState } from "react";
 import { BsEye } from "react-icons/bs";
 import { TbEyeClosed } from "react-icons/tb";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { useAppSelector } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { setLogin } from "@/redux/features/auth-slice";
 
 const Signin = () => {
   const { signIN } = useApi();
-  const [showPassword, setShowPassword] = useState(false);
+const dispatch = useDispatch();
+const [showPassword, setShowPassword] = useState(false);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -20,20 +25,25 @@ const Signin = () => {
     validationSchema: toFormikValidationSchema(signInSchema),
     validateOnMount: false,
     onSubmit: async (values, { resetForm }) => {
-      console.log(values);
-
       try {
-        const data = {
+        const res = await signIN({
           email: values.email,
           password: values.password,
-        };
-        const res = await signIN(data);
-        console.log(res, "res");
-        resetForm();
-      } catch (error) {
-        console.log(error);
+        });
+        const token = (res as { token: string }).token;
+        if (token) {
+          dispatch(setLogin(token)); 
+          toast.success("Logged in successfully");
+          resetForm();
+        } else {
+          toast.error((res as { message?: string }).message || "Login failed");
+        }
+      } catch (error: any) {
+        console.error("Login error:", error.message);
+        toast.error(error.message);
       }
-    },
+    }
+    
   });
   return (
     <>

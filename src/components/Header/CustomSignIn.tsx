@@ -17,7 +17,7 @@ const CustomSignIn = ({ options }) => {
   const isLoggedIn = useAppSelector((state)=> state.auth.isLoggedIn)
 
   const handleOptionClick = (option) => {
-    const protectedRoutes = [AppRoutes.MyProfile, AppRoutes.Orders, AppRoutes.Wishlist, AppRoutes.Rewards];
+    const protectedRoutes = [AppRoutes.MyAccount, AppRoutes.Orders, AppRoutes.Wishlist, AppRoutes.Rewards];
   
     if (protectedRoutes.includes(option.value) && !isLoggedIn) {
       const signInOption = options.find((opt) => opt.value === "/signin");

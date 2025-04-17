@@ -4,8 +4,14 @@ import Breadcrumb from "../Common/Breadcrumb";
 import Image from "next/image";
 import AddressModal from "./AddressModal";
 import Orders from "../Orders";
+import { useDispatch } from "react-redux";
+import { setLogout } from "@/redux/features/auth-slice";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const MyAccount = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("dashboard");
   const [addressModal, setAddressModal] = useState(false);
 
@@ -15,6 +21,11 @@ const MyAccount = () => {
 
   const closeAddressModal = () => {
     setAddressModal(false);
+  };
+  const handleLogout = () => {
+    dispatch(setLogout()); 
+    toast.success("Logged out successfully"); 
+    router.push("/signin"); 
   };
 
   return (
@@ -219,7 +230,9 @@ const MyAccount = () => {
                     </button>
 
                     <button
-                      onClick={() => setActiveTab("logout")}
+                      onClick={() => {
+                        handleLogout(), setActiveTab("logout");
+                      }}
                       className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
                         activeTab === "logout"
                           ? "text-white bg-blue"

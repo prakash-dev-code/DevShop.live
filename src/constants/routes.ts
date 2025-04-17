@@ -4,7 +4,7 @@ export enum AuthRoutes {
   }
 
   export enum AppRoutes {
-    MyProfile = "/my-profile",
+    MyAccount = "/my-account",
     Orders = "/orders",
     Wishlist = "/wishlist",
     Rewards = "/rewards",

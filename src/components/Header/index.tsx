@@ -59,7 +59,7 @@ const Header = () => {
   const signInoptions = [
     { label: "Sign In", value: "/signin",icon: <FiLogIn size={18} color="blue" />},
     { label: "Sign Up", value: "/signup",icon: <LuUserPlus size={18} color="blue" /> },
-    { label: "My Profile", value: "/my-profile",icon: <CgProfile size={18} color="blue" /> },
+    { label: "My Profile", value: "/my-account",icon: <CgProfile size={18} color="blue" /> },
     { label: "Orders", value: "/orders",icon: <HiShoppingBag size={18} color="blue" /> },
     { label: "Wishlist", value: "/wishlist" ,icon: <GoHeart size={18} color="blue"/>},
     { label: "Rewards", value: "/rewards" ,icon: <IoGiftOutline  size={18} color="blue"/>},
