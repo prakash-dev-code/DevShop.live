@@ -12,11 +12,16 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import { useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { setLogin } from "@/redux/features/auth-slice";
+import { User } from "@/types/common";
+import ButtonLoader from "@/components/Common/buttonLoader";
+import { useRouter } from "next/navigation";
 
 const Signin = () => {
   const { signIN } = useApi();
 const dispatch = useDispatch();
 const [showPassword, setShowPassword] = useState(false);
+const [loading , setLoading] = useState(false);
+const router = useRouter()
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -26,14 +31,17 @@ const [showPassword, setShowPassword] = useState(false);
     validateOnMount: false,
     onSubmit: async (values, { resetForm }) => {
       try {
+        setLoading(true);
         const res = await signIN({
           email: values.email,
           password: values.password,
         });
-        const token = (res as { token: string }).token;
+        const { token, data } = res as { token: string;  data : {user: User }};
+        setLoading(false);
         if (token) {
-          dispatch(setLogin(token)); 
+          dispatch(setLogin({ token,  user:data.user }));
           toast.success("Logged in successfully");
+          router.push("/")
           resetForm();
         } else {
           toast.error((res as { message?: string }).message || "Login failed");
@@ -41,6 +49,7 @@ const [showPassword, setShowPassword] = useState(false);
       } catch (error: any) {
         console.error("Login error:", error.message);
         toast.error(error.message);
+        setLoading(false);
       }
     }
     
@@ -123,7 +132,7 @@ const [showPassword, setShowPassword] = useState(false);
         : "hover:bg-blue"
     }`}
                 >
-                  Sign in to account
+                  Sign in to account {loading && <ButtonLoader/>}  
                 </button>
 
                 <a
