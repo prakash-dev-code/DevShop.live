@@ -4,10 +4,18 @@ import Breadcrumb from "../Common/Breadcrumb";
 import Image from "next/image";
 import AddressModal from "./AddressModal";
 import Orders from "../Orders";
+import { useDispatch } from "react-redux";
+import { setLogout } from "@/redux/features/auth-slice";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useAppSelector } from "@/redux/store";
 
 const MyAccount = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("dashboard");
   const [addressModal, setAddressModal] = useState(false);
+  const user = useAppSelector((state)=> state.auth.user)
 
   const openAddressModal = () => {
     setAddressModal(true);
@@ -15,6 +23,11 @@ const MyAccount = () => {
 
   const closeAddressModal = () => {
     setAddressModal(false);
+  };
+  const handleLogout = () => {
+    router.push("/signin"); 
+    toast.success("Logged out successfully"); 
+    dispatch(setLogout()); 
   };
 
   return (
@@ -39,7 +52,7 @@ const MyAccount = () => {
 
                   <div>
                     <p className="font-medium text-dark mb-0.5">
-                      James Septimus
+                      {user?.name || "User Name"}
                     </p>
                     <p className="text-custom-xs">Member Since Sep 2020</p>
                   </div>
@@ -219,7 +232,9 @@ const MyAccount = () => {
                     </button>
 
                     <button
-                      onClick={() => setActiveTab("logout")}
+                      onClick={() => {
+                        handleLogout(), setActiveTab("logout");
+                      }}
                       className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
                         activeTab === "logout"
                           ? "text-white bg-blue"
