@@ -1,7 +1,7 @@
 "use client";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import { useApi } from "@/services/apiServices";
-import { signInSchema } from "@/shared/schemas/formSchema";
+import { resetPasswordSchema, signInSchema } from "@/shared/schemas/formSchema";
 import { useFormik } from "formik";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -14,35 +14,38 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "@/redux/features/auth-slice";
 import { User } from "@/types/common";
 import ButtonLoader from "@/components/Common/buttonLoader";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 type ForgotPasswordResponse = {
   status: "success" | "error"; // or just "success" if you expect only that
   message: string;
 };
 const Forgetpassword = ({ token }: { token: string }) => {
-  const { signIN ,forgerPassword} = useApi();
+  const {  resetPassword} = useApi();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState("");
+
   const router = useRouter();
-  // const { token } = router.query;
   console.log("Received token:", token);
+  const temporaryToken = token as string;
   const formik = useFormik({
     initialValues: {
-      email: "",
       password: "",
+      confirmPassword: "",
     },
-    validationSchema: toFormikValidationSchema(signInSchema),
+    validationSchema: toFormikValidationSchema(resetPasswordSchema),
     validateOnMount: false,
     onSubmit: async (values, { resetForm }) => {
       try {
         setLoading(true);
-        const res = await signIN({
-          email: values.email,
-          password: values.password,
-        });
+        const res = await resetPassword(
+          {
+            password: values.password,
+            confirmPassword: values.confirmPassword,
+          },
+          temporaryToken,
+        );
         const { token, data } = res as { token: string; data: { user: User } };
         setLoading(false);
         if (token) {
@@ -61,26 +64,7 @@ const Forgetpassword = ({ token }: { token: string }) => {
     },
   });
 
-  const handleForgetPassword = async () => {
-    try {
-      setLoading(true);
-      const res = (await forgerPassword({
-        email: resetEmail,
-      })) as ForgotPasswordResponse;
-      setLoading(false);
-      if (res as { message: string }) {
-        toast.success(res.message);
-        setResetEmail("");
-        setShowForgotPassword(false);
-      } else {
-        toast.error((res as { message?: string }).message || "Failed to send reset link");
-      }
-    } catch (error: any) {
-      console.error("Reset password error:", error.message);
-      toast.error(error.message);
-      setLoading(false);
-    }
-  }
+
   return (
     <>
       <Breadcrumb title={"Forget Password"} pages={["Forget Password"]} />
@@ -98,25 +82,7 @@ const Forgetpassword = ({ token }: { token: string }) => {
 
               <div>
                 <form onSubmit={formik.handleSubmit}>
-                  <div className="mb-5">
-                    <label htmlFor="email" className="block mb-2.5">
-                      Email
-                    </label>
-
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      onChange={formik.handleChange}
-                      value={formik.values.email}
-                      onBlur={formik.handleBlur}
-                      placeholder="Enter your email"
-                      className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
-                    />
-                    {formik.touched.email && formik.errors.email && (
-                      <p className="text-red text-sm">{formik.errors.email}</p>
-                    )}
-                  </div>
+                  
 
                   <div className="mb-5">
                     <label htmlFor="password" className="block mb-2.5">
@@ -149,6 +115,41 @@ const Forgetpassword = ({ token }: { token: string }) => {
                     {formik.touched.password && formik.errors.password && (
                       <p className="text-red text-sm">
                         {formik.errors.password}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mb-5">
+                    <label htmlFor="confirmPassword" className="block mb-2.5">
+                     Confirm Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showConfirmPassword ? "text" : "password"}
+                        name="confirmPassword"
+                        id="confirmPassword"
+                        onChange={formik.handleChange}
+                        value={formik.values.confirmPassword}
+                        onBlur={formik.handleBlur}
+                        placeholder="Confirm your password"
+                        // autoComplete="on"
+                        className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-dark-5 hover:text-dark-3"
+                      >
+                        {showConfirmPassword ? (
+                          <TbEyeClosed size={20} />
+                        ) : (
+                          <BsEye size={20} />
+                        )}
+                      </button>
+                    </div>
+                    {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+                      <p className="text-red text-sm">
+                        {formik.errors.confirmPassword}
                       </p>
                     )}
                   </div>

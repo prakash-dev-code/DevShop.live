@@ -9,7 +9,7 @@ const forgerPassword = async (body: any) => {
 };
 
 const resetPassword = async (body:any,token: any) => {
-  return apiMethod(`api/v1/users/reset-password/${token}`, "post", body);
+  return apiMethod(`api/v1/users/reset-password/${token}`, "patch", body);
 };
 
 export const useApi = () => ({

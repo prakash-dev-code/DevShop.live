@@ -2,10 +2,10 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const axiosInstance = axios.create({
-  // baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  baseURL: "https://devshop-backend-xzm8.onrender.com/",
 
+const axiosInstance = axios.create({
+  // https://devshop-backend-xzm8.onrender.com/
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
