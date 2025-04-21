@@ -114,6 +114,7 @@ const config: Config = {
         "heading-6": ["24px", "30px"],
         "custom-xl": ["20px", "24px"],
         "custom-lg": ["18px", "24px"],
+        "custom-base": ["16px", "20px"],
         "custom-sm": ["14px", "22px"],
         "custom-xs": ["12px", "20px"],
         "custom-2xl": ["24px", "34px"],

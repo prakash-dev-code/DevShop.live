@@ -1,24 +1,55 @@
 // import { useRouter } from "next/router";
+import { AppRoutes } from "@/constants/routes";
+import { setLogout } from "@/redux/features/auth-slice";
+import { useAppSelector } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { FiLogOut } from "react-icons/fi";
+import { useDispatch } from "react-redux";
 
 const CustomSignIn = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [selectedOption, setSelectedOption] = useState(null);
   const router = useRouter()
   const dropdownRef = useRef(null);
-
+  const dispatch = useDispatch();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-
+  const isLoggedIn = useAppSelector((state)=> state.auth.isLoggedIn)
+  const user = useAppSelector((state)=> state.auth.user)
   const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    router.push(option.value)
-    toggleDropdown();
+    if (option.value === "/logout") {
+      dispatch(setLogout()); // 🔁 Make sure you have a logout action
+      setIsOpen(false);
+      toast.success("Logged out successfully");
+      router.push("/"); // or redirect to home
+      return;
+    }
+  
+    const protectedRoutes = [
+      AppRoutes.MyAccount,
+      AppRoutes.Orders,
+      AppRoutes.Wishlist,
+      AppRoutes.Rewards,
+    ];
+  
+    if (protectedRoutes.includes(option.value) && !isLoggedIn) {
+      const signInOption = options.find((opt) => opt.value === "/signin");
+      setSelectedOption(signInOption);
+      router.push("/signin");
+    } else {
+      setSelectedOption(option);
+      router.push(option.value);
+    }
+  
     setIsOpen(false);
   };
+  
+
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -62,17 +93,37 @@ const CustomSignIn = ({ options }) => {
           </svg>
 
           <div>
-            <span className="block text-2xs text-dark-4 uppercase">
+
+            {
+              isLoggedIn ? <p className="font-medium text-custom-base text-dark">{user.name.split(" ")[0]}</p> : (<>
+              
+              <span className="block text-2xs text-dark-4 uppercase">
               account
             </span>
             <p className="font-medium text-custom-sm text-dark">Sign In</p>
+              </>)
+            }
+
+            
           </div>
         </div>
         <div
           className={`select-items ${isOpen ? "" : "select-hide"}`}
           style={{ width: "200px" }}
         >
-          {options.map((option, index) => (
+          {(isLoggedIn
+  ? [
+      ...options.filter(
+        (opt) => opt.value !== "/signin" && opt.value !== "/signup"
+      ),
+      {
+        label: "Logout",
+        value: "/logout",
+        icon: <FiLogOut size={18} color="blue" />,
+      },
+    ]
+  : options
+).map((option, index) => (
             <div
               key={index}
               onClick={() => handleOptionClick(option)}
