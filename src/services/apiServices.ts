@@ -16,10 +16,14 @@ const resetPassword = async (body:any,token: any) => {
 const signUp = async (body: any) => {
   return apiMethod(`api/v1/users/sign-up/`, "post", body);
 };
+const verifyOTP = async (body: any) => {
+  return apiMethod(`api/v1/users/verify-email/`, "post", body);
+};
 
 export const useApi = () => ({
   signIN,
   forgerPassword,
   resetPassword,
   signUp,
+  verifyOTP,
 });

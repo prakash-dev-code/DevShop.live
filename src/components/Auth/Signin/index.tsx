@@ -20,7 +20,7 @@ type ForgotPasswordResponse = {
   message: string;
 };
 const Signin = () => {
-  const { signIN ,forgerPassword} = useApi();
+  const { signIN, forgerPassword } = useApi();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -71,14 +71,16 @@ const Signin = () => {
         setResetEmail("");
         setShowForgotPassword(false);
       } else {
-        toast.error((res as { message?: string }).message || "Failed to send reset link");
+        toast.error(
+          (res as { message?: string }).message || "Failed to send reset link"
+        );
       }
     } catch (error: any) {
       console.error("Reset password error:", error.message);
       toast.error(error.message);
       setLoading(false);
     }
-  }
+  };
   return (
     <>
       <Breadcrumb title={"Signin"} pages={["Signin"]} />
@@ -95,7 +97,6 @@ const Signin = () => {
                 <p>Enter your email to reset password</p>
               </div>
 
-            
               <input
                 type="email"
                 id="resetEmail"
