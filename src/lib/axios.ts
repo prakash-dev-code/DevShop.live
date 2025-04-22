@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 
 const axiosInstance = axios.create({
-  // https://devshop-backend-xzm8.onrender.com/
+
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
     "Content-Type": "application/json",

@@ -1,17 +1,25 @@
 "use client";
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import { useApi } from "@/services/apiServices";
 import { signUpSchema } from "@/shared/schemas/formSchema";
 import { useFormik } from "formik";
+import toast from "react-hot-toast";
 import Link from "next/link";
 import React, { useState } from "react";
 import { BsEye } from "react-icons/bs";
 import { TbEyeClosed } from "react-icons/tb";
 import { toFormikValidationSchema } from "zod-formik-adapter";
-
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setLogin } from "@/redux/features/auth-slice";
+import { User } from "@/types/common";
 const Signup = () => {
+  const { signIN } = useApi();
+    const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -21,11 +29,55 @@ const Signup = () => {
     },
     validationSchema: toFormikValidationSchema(signUpSchema),
     validateOnMount: false,
-    onSubmit: (values, { resetForm }) => {
-      console.log(values);
-      resetForm();
+    onSubmit: async(values, { resetForm }) => {
+      try {
+                setLoading(true);
+                const res = await signIN({
+                  email: values.email,
+                  password: values.password,
+                });
+                const { token, data } = res as { token: string; data: { user: User } };
+                setLoading(false);
+                if (token) {
+                  dispatch(setLogin({ token, user: data.user }));
+                  toast.success("Logged in successfully");
+                  router.push("/");
+                  resetForm();
+                } else {
+                  toast.error((res as { message?: string }).message || "Login failed");
+                }
+              } catch (error: any) {
+                console.error("Login error:", error.message);
+                toast.error(error.message);
+                setLoading(false);
+              }
     },
   });
+
+  //  onSubmit: async (values, { resetForm }) => {
+  //       try {
+  //         setLoading(true);
+  //         const res = await signIN({
+  //           email: values.email,
+  //           password: values.password,
+  //         });
+  //         const { token, data } = res as { token: string; data: { user: User } };
+  //         setLoading(false);
+  //         if (token) {
+  //           dispatch(setLogin({ token, user: data.user }));
+  //           toast.success("Logged in successfully");
+  //           router.push("/");
+  //           resetForm();
+  //         } else {
+  //           toast.error((res as { message?: string }).message || "Login failed");
+  //         }
+  //       } catch (error: any) {
+  //         console.error("Login error:", error.message);
+  //         toast.error(error.message);
+  //         setLoading(false);
+  //       }
+  //     },
+  //   });
   return (
     <>
       <Breadcrumb title={"Signup"} pages={["Signup"]} />
