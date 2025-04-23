@@ -33,7 +33,7 @@ const Signup = () => {
     },
     validationSchema: toFormikValidationSchema(signUpSchema),
     validateOnMount: false,
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values) => {
       try {
         setLoading(true);
         const res = await signUp({

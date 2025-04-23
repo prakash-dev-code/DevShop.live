@@ -4,12 +4,11 @@ const signIN = async (body: any) => {
   return apiMethod(`api/v1/users/sign-in/`, "post", body);
 };
 
-
 const forgerPassword = async (body: any) => {
   return apiMethod(`api/v1/users/forget-password/`, "post", body);
 };
 
-const resetPassword = async (body:any,token: any) => {
+const resetPassword = async (body: any, token: any) => {
   return apiMethod(`api/v1/users/reset-password/${token}`, "patch", body);
 };
 
@@ -20,10 +19,15 @@ const verifyOTP = async (body: any) => {
   return apiMethod(`api/v1/users/verify-email/`, "post", body);
 };
 
+const changePassword = async (body: any) => {
+  return apiMethod(`api/v1/users/change-password/`, "patch", body,true);
+};
+
 export const useApi = () => ({
   signIN,
   forgerPassword,
   resetPassword,
   signUp,
   verifyOTP,
+  changePassword,
 });
