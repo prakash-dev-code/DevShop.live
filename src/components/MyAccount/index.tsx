@@ -25,9 +25,9 @@ const MyAccount = () => {
   const [addressModal, setAddressModal] = useState(false);
   const user = useAppSelector((state) => state.auth.user);
   const [loading, setLoading] = useState(false);
-  const [eyeOldPassword, setEyeOldPassword] = useState(false);
-  const [eyePassword, setEyePassword] = useState(false);
-  const [eyeConfirmPassword, setEyeConfirmPassword] = useState(false);
+  const [eyeOldPassword, setEyeOldPassword] = useState(true);
+  const [eyePassword, setEyePassword] = useState(true);
+  const [eyeConfirmPassword, setEyeConfirmPassword] = useState(true);
 
   const openAddressModal = () => {
     setAddressModal(true);
