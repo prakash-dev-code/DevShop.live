@@ -194,7 +194,7 @@ const Signup = () => {
 
                     <div className="relative">
                       <input
-                        type={showPassword ? "text" : "password"}
+                        type={showPassword ? "password" : "text"}
                         name="password"
                         id="password"
                         onChange={formik.handleChange}
@@ -229,7 +229,7 @@ const Signup = () => {
                     </label>
                     <div className="relative">
                       <input
-                        type={showConfirmPassword ? "text" : "password"}
+                        type={showConfirmPassword ? "password" : "text"}
                         name="confirmPassword"
                         id="confirmPassword"
                         placeholder="Confirm  password"

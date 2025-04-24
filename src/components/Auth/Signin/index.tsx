@@ -163,7 +163,7 @@ const Signin = () => {
                     </label>
                     <div className="relative">
                       <input
-                        type={showPassword ? "text" : "password"}
+                        type={showPassword ? "password" : "text"}
                         name="password"
                         id="password"
                         onChange={formik.handleChange}

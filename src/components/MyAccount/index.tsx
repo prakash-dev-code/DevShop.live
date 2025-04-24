@@ -14,6 +14,8 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import { changePasswordSchema } from "@/shared/schemas/formSchema";
 import { useApi } from "@/services/apiServices";
 import ButtonLoader from "../Common/buttonLoader";
+import { TbEyeClosed } from "react-icons/tb";
+import { BsEye } from "react-icons/bs";
 
 const MyAccount = () => {
   const { changePassword } = useApi();
@@ -23,6 +25,9 @@ const MyAccount = () => {
   const [addressModal, setAddressModal] = useState(false);
   const user = useAppSelector((state) => state.auth.user);
   const [loading, setLoading] = useState(false);
+  const [eyeOldPassword, setEyeOldPassword] = useState(false);
+  const [eyePassword, setEyePassword] = useState(false);
+  const [eyeConfirmPassword, setEyeConfirmPassword] = useState(false);
 
   const openAddressModal = () => {
     setAddressModal(true);
@@ -44,7 +49,7 @@ const MyAccount = () => {
     },
     validationSchema: toFormikValidationSchema(changePasswordSchema),
     validateOnMount: false,
-    onSubmit: async (values,{resetForm}) => {
+    onSubmit: async (values, { resetForm }) => {
       try {
         setLoading(true);
         const res = await changePassword({
@@ -59,7 +64,7 @@ const MyAccount = () => {
         setLoading(false);
         if (status === "success") {
           setActiveTab("dashboard");
-          resetForm()
+          resetForm();
           toast.success((res as { message?: string }).message);
         } else {
           toast.error(
@@ -725,17 +730,29 @@ const MyAccount = () => {
                     <label htmlFor="passwordCurrent" className="block mb-2.5">
                       Old Password
                     </label>
-
-                    <input
-                      type="password"
-                      name="passwordCurrent"
-                      id="passwordCurrent"
-                      onChange={formik.handleChange}
-                      value={formik.values.passwordCurrent}
-                      onBlur={formik.handleBlur}
-                      // autoComplete="on"
-                      className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
-                    />
+                    <div className="relative">
+                      <input
+                        type={eyeOldPassword ? "password" : "text"}
+                        name="passwordCurrent"
+                        id="passwordCurrent"
+                        onChange={formik.handleChange}
+                        value={formik.values.passwordCurrent}
+                        onBlur={formik.handleBlur}
+                        // autoComplete="on"
+                        className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setEyeOldPassword(!eyeOldPassword)}
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-dark-5 hover:text-dark-3"
+                      >
+                        {eyeOldPassword ? (
+                          <TbEyeClosed size={20} />
+                        ) : (
+                          <BsEye size={20} />
+                        )}
+                      </button>
+                    </div>
                     {formik.touched.passwordCurrent &&
                       formik.errors.passwordCurrent && (
                         <p className="text-red text-sm">
@@ -749,42 +766,66 @@ const MyAccount = () => {
                       New Password
                     </label>
 
-                    <input
-                      type="password"
-                      name="password"
-                      id="password"
-                      onChange={formik.handleChange}
-                      value={formik.values.password}
-                      onBlur={formik.handleBlur}
-                      // autoComplete="on"
-                      className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
-                    />
-                    {formik.touched.password &&
-                      formik.errors.password && (
-                        <p className="text-red text-sm">
-                          {formik.errors.password}
-                        </p>
-                      )}
+                    <div className="relative">
+                      <input
+                        type={eyePassword ? "password" : "text"}
+                        name="password"
+                        id="password"
+                        onChange={formik.handleChange}
+                        value={formik.values.password}
+                        onBlur={formik.handleBlur}
+                        // autoComplete="on"
+                        className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setEyePassword(!eyePassword)}
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-dark-5 hover:text-dark-3"
+                      >
+                        {eyePassword ? (
+                          <TbEyeClosed size={20} />
+                        ) : (
+                          <BsEye size={20} />
+                        )}
+                      </button>
+                    </div>
+                    {formik.touched.password && formik.errors.password && (
+                      <p className="text-red text-sm">
+                        {formik.errors.password}
+                      </p>
+                    )}
                   </div>
 
                   <div className="mb-5">
-                    <label
-                      htmlFor="confirmPassword"
-                      className="block mb-2.5"
-                    >
+                    <label htmlFor="confirmPassword" className="block mb-2.5">
                       Confirm New Password
                     </label>
 
-                    <input
-                      type="password"
-                      name="confirmPassword"
-                      id="confirmPassword"
-                      onChange={formik.handleChange}
-                      value={formik.values.confirmPassword}
-                      onBlur={formik.handleBlur}
-                      // autoComplete="on"
-                      className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
-                    />
+                    <div className="relative">
+                      <input
+                        type={eyeConfirmPassword ? "password" : "text"}
+                        name="confirmPassword"
+                        id="confirmPassword"
+                        onChange={formik.handleChange}
+                        value={formik.values.confirmPassword}
+                        onBlur={formik.handleBlur}
+                        // autoComplete="on"
+                        className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setEyeConfirmPassword(!eyeConfirmPassword)
+                        }
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-dark-5 hover:text-dark-3"
+                      >
+                        {eyeConfirmPassword ? (
+                          <TbEyeClosed size={20} />
+                        ) : (
+                          <BsEye size={20} />
+                        )}
+                      </button>
+                    </div>
                     {formik.touched.confirmPassword &&
                       formik.errors.confirmPassword && (
                         <p className="text-red text-sm">
