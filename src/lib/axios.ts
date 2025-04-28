@@ -2,9 +2,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-
 const axiosInstance = axios.create({
-  // https://devshop-backend-xzm8.onrender.com/
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
@@ -18,7 +16,7 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401 && typeof window !== "undefined") {
       localStorage.removeItem("token");
       toast.error("Session expired. Please log in again.");
-      window.location.href = "/login";
+      window.location.href = "/signin";
     }
     return Promise.reject(error);
   }
