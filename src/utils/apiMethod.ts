@@ -13,7 +13,7 @@ export const apiMethod = async <T>(
     const headers: Record<string, string> = {};
 
     if (sendToken && typeof window !== "undefined") {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("authToken");
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
       }

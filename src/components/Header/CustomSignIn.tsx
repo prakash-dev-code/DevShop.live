@@ -11,31 +11,31 @@ import { useDispatch } from "react-redux";
 const CustomSignIn = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  const router = useRouter()
+  const router = useRouter();
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-  const isLoggedIn = useAppSelector((state)=> state.auth.isLoggedIn)
-  const user = useAppSelector((state)=> state.auth.user)
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const user = useAppSelector((state) => state.auth.user);
   const handleOptionClick = (option) => {
     if (option.value === "/logout") {
       dispatch(setLogout()); // 🔁 Make sure you have a logout action
+      router.push("/signin"); // or redirect to home
       setIsOpen(false);
       toast.success("Logged out successfully");
-      router.push("/"); // or redirect to home
       return;
     }
-  
+
     const protectedRoutes = [
       AppRoutes.MyAccount,
       AppRoutes.Orders,
       AppRoutes.Wishlist,
       AppRoutes.Rewards,
     ];
-  
+
     if (protectedRoutes.includes(option.value) && !isLoggedIn) {
       const signInOption = options.find((opt) => opt.value === "/signin");
       setSelectedOption(signInOption);
@@ -44,11 +44,9 @@ const CustomSignIn = ({ options }) => {
       setSelectedOption(option);
       router.push(option.value);
     }
-  
+
     setIsOpen(false);
   };
-  
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -93,18 +91,18 @@ const CustomSignIn = ({ options }) => {
           </svg>
 
           <div>
-
-            {
-              isLoggedIn ? <p className="font-medium text-custom-base text-dark">{user.name.split(" ")[0]}</p> : (<>
-              
-              <span className="block text-2xs text-dark-4 uppercase">
-              account
-            </span>
-            <p className="font-medium text-custom-sm text-dark">Sign In</p>
-              </>)
-            }
-
-            
+            {isLoggedIn ? (
+              <p className="font-medium text-custom-base text-dark">
+                {user.name.split(" ")[0]}
+              </p>
+            ) : (
+              <>
+                <span className="block text-2xs text-dark-4 uppercase">
+                  account
+                </span>
+                <p className="font-medium text-custom-sm text-dark">Sign In</p>
+              </>
+            )}
           </div>
         </div>
         <div
@@ -112,18 +110,18 @@ const CustomSignIn = ({ options }) => {
           style={{ width: "200px" }}
         >
           {(isLoggedIn
-  ? [
-      ...options.filter(
-        (opt) => opt.value !== "/signin" && opt.value !== "/signup"
-      ),
-      {
-        label: "Logout",
-        value: "/logout",
-        icon: <FiLogOut size={18} color="blue" />,
-      },
-    ]
-  : options
-).map((option, index) => (
+            ? [
+                ...options.filter(
+                  (opt) => opt.value !== "/signin" && opt.value !== "/signup"
+                ),
+                {
+                  label: "Logout",
+                  value: "/logout",
+                  icon: <FiLogOut size={18} color="blue" />,
+                },
+              ]
+            : options
+          ).map((option, index) => (
             <div
               key={index}
               onClick={() => handleOptionClick(option)}
@@ -137,9 +135,6 @@ const CustomSignIn = ({ options }) => {
           ))}
         </div>
       </div>
-    
-
-  
     </>
   );
 };
