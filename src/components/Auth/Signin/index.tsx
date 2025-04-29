@@ -20,7 +20,7 @@ type ForgotPasswordResponse = {
   message: string;
 };
 const Signin = () => {
-  const { signIN ,forgerPassword} = useApi();
+  const { signIN, forgerPassword } = useApi();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -71,14 +71,20 @@ const Signin = () => {
         setResetEmail("");
         setShowForgotPassword(false);
       } else {
-        toast.error((res as { message?: string }).message || "Failed to send reset link");
+        toast.error(
+          (res as { message?: string }).message || "Failed to send reset link"
+        );
       }
     } catch (error: any) {
       console.error("Reset password error:", error.message);
       toast.error(error.message);
       setLoading(false);
     }
-  }
+  };
+
+  const loginWithGoogle = () => {
+    window.location.href = "http://localhost:8000/api/v1/users/auth/google";
+  };
   return (
     <>
       <Breadcrumb title={"Signin"} pages={["Signin"]} />
@@ -95,7 +101,6 @@ const Signin = () => {
                 <p>Enter your email to reset password</p>
               </div>
 
-            
               <input
                 type="email"
                 id="resetEmail"
@@ -162,7 +167,7 @@ const Signin = () => {
                     </label>
                     <div className="relative">
                       <input
-                        type={showPassword ? "text" : "password"}
+                        type={showPassword ? "password" : "text"}
                         name="password"
                         id="password"
                         onChange={formik.handleChange}
@@ -217,7 +222,10 @@ const Signin = () => {
                   </span>
 
                   <div className="flex flex-col gap-4.5 mt-4.5">
-                    <button className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2">
+                    <button
+                      onClick={() => loginWithGoogle()}
+                      className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2"
+                    >
                       <svg
                         width="20"
                         height="20"
@@ -243,7 +251,7 @@ const Signin = () => {
                             />
                             <path
                               d="M10.2036 20C12.9586 20 15.2715 19.1111 16.9609 17.5777L13.7409 15.1332C12.8793 15.7223 11.7229 16.1333 10.2036 16.1333C8.91317 16.126 7.65795 15.7206 6.61596 14.9746C5.57397 14.2287 4.79811 13.1802 4.39848 11.9777L4.2789 11.9877L1.12906 14.3766L1.08789 14.4888C1.93622 16.1457 3.23812 17.5386 4.84801 18.512C6.45791 19.4852 8.31194 20.0005 10.2036 20Z"
-                              fill="#34A853"
+                              fill="#34=>A853"
                             />
                             <path
                               d="M4.39899 11.9776C4.1758 11.3411 4.06063 10.673 4.05807 9.9999C4.06218 9.3279 4.1731 8.66067 4.38684 8.02221L4.38115 7.88959L1.1927 5.46234L1.0884 5.51095C0.372762 6.90337 0 8.44075 0 9.99983C0 11.5589 0.372762 13.0962 1.0884 14.4887L4.39899 11.9776Z"
