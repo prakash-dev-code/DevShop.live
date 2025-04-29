@@ -13,10 +13,10 @@ import { setLogin } from "@/redux/features/auth-slice";
 import { User } from "@/types/common";
 import ButtonLoader from "@/components/Common/buttonLoader";
 import { useRouter } from "next/navigation";
-type ForgotPasswordResponse = {
-  status: "success" | "error"; // or just "success" if you expect only that
-  message: string;
-};
+// type ForgotPasswordResponse = {
+//   status: "success" | "error"; // or just "success" if you expect only that
+//   message: string;
+// };
 const Forgetpassword = ({ token }: { token: string }) => {
   const { resetPassword } = useApi();
   const dispatch = useDispatch();
