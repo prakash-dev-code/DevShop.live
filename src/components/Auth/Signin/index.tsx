@@ -1,22 +1,22 @@
-"use client";
-import Breadcrumb from "@/components/Common/Breadcrumb";
-import { useApi } from "@/services/apiServices";
-import { signInSchema } from "@/shared/schemas/formSchema";
-import { useFormik } from "formik";
-import Link from "next/link";
-import toast from "react-hot-toast";
-import React, { useState } from "react";
-import { BsEye } from "react-icons/bs";
-import { TbEyeClosed } from "react-icons/tb";
-import { toFormikValidationSchema } from "zod-formik-adapter";
+'use client';
+import Breadcrumb from '@/components/Common/Breadcrumb';
+import { useApi } from '@/services/apiServices';
+import { signInSchema } from '@/shared/schemas/formSchema';
+import { useFormik } from 'formik';
+import Link from 'next/link';
+import toast from 'react-hot-toast';
+import React, { useState } from 'react';
+import { BsEye } from 'react-icons/bs';
+import { TbEyeClosed } from 'react-icons/tb';
+import { toFormikValidationSchema } from 'zod-formik-adapter';
 // import { useAppSelector } from "@/redux/store";
-import { useDispatch } from "react-redux";
-import { setLogin } from "@/redux/features/auth-slice";
-import { User } from "@/types/common";
-import ButtonLoader from "@/components/Common/buttonLoader";
-import { useRouter } from "next/navigation";
+import { useDispatch } from 'react-redux';
+import { setLogin } from '@/redux/features/auth-slice';
+import { User } from '@/types/common';
+import ButtonLoader from '@/components/Common/buttonLoader';
+import { useRouter } from 'next/navigation';
 type ForgotPasswordResponse = {
-  status: "success" | "error"; // or just "success" if you expect only that
+  status: 'success' | 'error'; // or just "success" if you expect only that
   message: string;
 };
 const Signin = () => {
@@ -25,12 +25,12 @@ const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState("");
+  const [resetEmail, setResetEmail] = useState('');
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
     validationSchema: toFormikValidationSchema(signInSchema),
     validateOnMount: false,
@@ -45,14 +45,14 @@ const Signin = () => {
         setLoading(false);
         if (token) {
           dispatch(setLogin({ token, user: data.user }));
-          toast.success("Logged in successfully");
-          router.push("/");
+          toast.success('Logged in successfully');
+          router.push('/');
           resetForm();
         } else {
-          toast.error((res as { message?: string }).message || "Login failed");
+          toast.error((res as { message?: string }).message || 'Login failed');
         }
       } catch (error: any) {
-        console.error("Login error:", error.message);
+        console.error('Login error:', error.message);
         toast.error(error.message);
         setLoading(false);
       }
@@ -68,26 +68,24 @@ const Signin = () => {
       setLoading(false);
       if (res as { message: string }) {
         toast.success(res.message);
-        setResetEmail("");
+        setResetEmail('');
         setShowForgotPassword(false);
       } else {
-        toast.error(
-          (res as { message?: string }).message || "Failed to send reset link"
-        );
+        toast.error((res as { message?: string }).message || 'Failed to send reset link');
       }
     } catch (error: any) {
-      console.error("Reset password error:", error.message);
+      console.error('Reset password error:', error.message);
       toast.error(error.message);
       setLoading(false);
     }
   };
 
   const loginWithGoogle = () => {
-    window.location.href = "http://localhost:8000/api/v1/users/auth/google";
+    window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}api/v1/users/auth/google`;
   };
   return (
     <>
-      <Breadcrumb title={"Signin"} pages={["Signin"]} />
+      <Breadcrumb title={'Signin'} pages={['Signin']} />
 
       {/* forget password input  */}
       {showForgotPassword ? (
@@ -107,7 +105,7 @@ const Signin = () => {
                 name="resetEmail"
                 placeholder="Enter your email"
                 value={resetEmail}
-                onChange={(e) => setResetEmail(e.target.value)}
+                onChange={e => setResetEmail(e.target.value)}
                 className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
               />
               <button
@@ -167,7 +165,7 @@ const Signin = () => {
                     </label>
                     <div className="relative">
                       <input
-                        type={showPassword ? "password" : "text"}
+                        type={showPassword ? 'password' : 'text'}
                         name="password"
                         id="password"
                         onChange={formik.handleChange}
@@ -182,17 +180,11 @@ const Signin = () => {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-4 top-1/2 transform -translate-y-1/2 text-dark-5 hover:text-dark-3"
                       >
-                        {showPassword ? (
-                          <TbEyeClosed size={20} />
-                        ) : (
-                          <BsEye size={20} />
-                        )}
+                        {showPassword ? <TbEyeClosed size={20} /> : <BsEye size={20} />}
                       </button>
                     </div>
                     {formik.touched.password && formik.errors.password && (
-                      <p className="text-red text-sm">
-                        {formik.errors.password}
-                      </p>
+                      <p className="text-red text-sm">{formik.errors.password}</p>
                     )}
                   </div>
 
@@ -200,11 +192,7 @@ const Signin = () => {
                     type="submit"
                     disabled={!formik.isValid || formik.isSubmitting}
                     className={`w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 mt-7.5
-    ${
-      !formik.isValid || formik.isSubmitting
-        ? "opacity-50 cursor-not-allowed"
-        : "hover:bg-blue"
-    }`}
+    ${!formik.isValid || formik.isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue'}`}
                   >
                     Sign in to account {loading && <ButtonLoader />}
                   </button>

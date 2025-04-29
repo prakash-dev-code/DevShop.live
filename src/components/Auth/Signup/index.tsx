@@ -88,7 +88,7 @@ const Signup = () => {
   };
 
   const loginWithGoogle = () => {
-    window.location.href = "http://localhost:8000/api/v1/users/auth/google";
+   window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}api/v1/users/auth/google`;
   };
 
   return (
