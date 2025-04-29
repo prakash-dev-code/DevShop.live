@@ -87,6 +87,10 @@ const Signup = () => {
     }
   };
 
+  const loginWithGoogle = () => {
+    window.location.href = "http://localhost:8000/api/v1/users/auth/google";
+  };
+
   return (
     <>
       <Breadcrumb title={"Signup"} pages={["Signup"]} />
@@ -281,7 +285,10 @@ const Signup = () => {
                   <span className="block absolute -z-1 left-0 top-1/2 h-px w-full bg-gray-3"></span>
                   <span className="inline-block px-3 bg-white">Or</span>
                 </span>
-                <button className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2">
+                <button
+                  onClick={() => loginWithGoogle()}
+                  className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2"
+                >
                   <svg
                     width="20"
                     height="20"
