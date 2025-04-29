@@ -93,7 +93,7 @@ const CustomSignIn = ({ options }) => {
           <div>
             {isLoggedIn ? (
               <p className="font-medium text-custom-base text-dark">
-                {user.name.split(" ")[0]}
+                {user?.name?.split(" ")[0]}
               </p>
             ) : (
               <>

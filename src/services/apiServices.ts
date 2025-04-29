@@ -20,9 +20,11 @@ const verifyOTP = async (body: any) => {
 };
 
 const changePassword = async (body: any) => {
-  return apiMethod(`api/v1/users/change-password/`, "patch", body,true);
+  return apiMethod(`api/v1/users/change-password/`, "patch", body, true);
 };
-
+const getLoggedUser = async () => {
+  return apiMethod(`api/v1/users/me/`, "get", {}, true);
+};
 export const useApi = () => ({
   signIN,
   forgerPassword,
@@ -30,4 +32,5 @@ export const useApi = () => ({
   signUp,
   verifyOTP,
   changePassword,
+  getLoggedUser,
 });
