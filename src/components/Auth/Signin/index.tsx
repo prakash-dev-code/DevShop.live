@@ -257,7 +257,7 @@ const Signin = () => {
                         </clipPath>
                       </defs>
                     </svg>
-                    Sign In with Google
+                    Continue with Google
                   </button>
 
                   {/* <button className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2">
