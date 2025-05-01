@@ -1,8 +1,25 @@
-import React from "react";
-import Image from "next/image";
+import React from 'react';
+import Image from 'next/image';
+import { useCartModalContext } from '@/app/context/CartSidebarModalContext';
+import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/redux/store';
 
 const Footer = () => {
   const year = new Date().getFullYear();
+  const { openCartModal } = useCartModalContext();
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn);
+  const router = useRouter();
+  const handleOpenCartModal = () => {
+    openCartModal();
+  };
+
+  const handleAccountClick = () => {
+    if (isLoggedIn) {
+      router.push('/my-account');
+    } else {
+      router.push('/signin');
+    }
+  };
 
   return (
     <footer className="overflow-hidden">
@@ -10,9 +27,7 @@ const Footer = () => {
         {/* <!-- footer menu start --> */}
         <div className="flex flex-wrap xl:flex-nowrap gap-10 xl:gap-19 xl:justify-between pt-17.5 xl:pt-22.5 pb-10 xl:pb-15">
           <div className="max-w-[330px] w-full">
-            <h2 className="mb-7.5 text-custom-1 font-medium text-dark">
-              Help & Support
-            </h2>
+            <h2 className="mb-7.5 text-custom-1 font-medium text-dark">Help & Support</h2>
 
             <ul className="flex flex-col gap-3">
               <li className="flex gap-4.5">
@@ -81,7 +96,7 @@ const Footer = () => {
                       fill="#3C50E0"
                     />
                   </svg>
-                  support@example.com
+                  devShop@mystore.com
                 </a>
               </li>
             </ul>
@@ -197,33 +212,39 @@ const Footer = () => {
           </div>
 
           <div className="w-full sm:w-auto">
-            <h2 className="mb-7.5 text-custom-1 font-medium text-dark">
-              Account
-            </h2>
+            <h2 className="mb-7.5 text-custom-1 font-medium text-dark">Account</h2>
 
             <ul className="flex flex-col gap-3.5">
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <span
+                  className="ease-out duration-200 hover:text-blue cursor-pointer"
+                  onClick={handleAccountClick}
+                >
                   My Account
-                </a>
+                </span>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/signin">
                   Login / Register
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <span
+                  className="ease-out duration-200 hover:text-blue cursor-pointer"
+                  onClick={handleOpenCartModal}
+                >
+                  {/* <a className="ease-out duration-200 hover:text-blue" href="#"> */}
                   Cart
-                </a>
+                  {/* </a> */}
+                </span>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/wishlist">
                   Wishlist
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/">
                   Shop
                 </a>
               </li>
@@ -231,33 +252,31 @@ const Footer = () => {
           </div>
 
           <div className="w-full sm:w-auto">
-            <h2 className="mb-7.5 text-custom-1 font-medium text-dark">
-              Quick Link
-            </h2>
+            <h2 className="mb-7.5 text-custom-1 font-medium text-dark">Quick Link</h2>
 
             <ul className="flex flex-col gap-3">
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/privacy-policy">
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/refund-policy">
                   Refund Policy
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/terms-of-use">
                   Terms of Use
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/faqs">
                   FAQ’s
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/contact">
                   Contact
                 </a>
               </li>
@@ -269,9 +288,7 @@ const Footer = () => {
               Download App
             </h2>
 
-            <p className="lg:text-right text-custom-sm mb-4">
-              Save $3 With App & New User only
-            </p>
+            <p className="lg:text-right text-custom-sm mb-4">Save $3 With App & New User only</p>
 
             <ul className="flex flex-col lg:items-end gap-3">
               <li>
@@ -294,9 +311,7 @@ const Footer = () => {
                   </svg>
 
                   <div>
-                    <span className="block text-custom-xs">
-                      Download on the
-                    </span>
+                    <span className="block text-custom-xs">Download on the</span>
                     <p className="font-medium">App Store</p>
                   </div>
                 </a>
@@ -337,9 +352,7 @@ const Footer = () => {
       <div className="py-5 xl:py-7.5 bg-gray-1">
         <div className="max-w-[1170px] mx-auto px-4 sm:px-8 xl:px-0">
           <div className="flex gap-5 flex-wrap items-center justify-between">
-            <p className="text-dark font-medium">
-              &copy; {year}. All rights reserved by Dev Shop.
-            </p>
+            <p className="text-dark font-medium">&copy; {year}. All rights reserved by Dev Shop.</p>
 
             <div className="flex flex-wrap items-center gap-4">
               <p className="font-medium">We Accept:</p>
@@ -354,12 +367,7 @@ const Footer = () => {
                   />
                 </a>
                 <a href="#" aria-label="payment system with paypal">
-                  <Image
-                    src="/images/payment/payment-02.svg"
-                    alt="paypal"
-                    width={18}
-                    height={21}
-                  />
+                  <Image src="/images/payment/payment-02.svg" alt="paypal" width={18} height={21} />
                 </a>
                 <a href="#" aria-label="payment system with master card">
                   <Image
