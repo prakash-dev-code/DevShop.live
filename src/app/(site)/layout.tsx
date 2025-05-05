@@ -17,6 +17,7 @@ import ScrollToTop from '@/components/Common/ScrollToTop';
 import PreLoader from '@/components/Common/PreLoader';
 import AuthInitializer from '@/components/Auth/AuthInitializer';
 import { Toaster } from 'react-hot-toast';
+import CartInitializer from '@/components/Auth/CartInitializer';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState<boolean>(true);
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <>
             <ReduxProvider>
               <AuthInitializer />
+              <CartInitializer />
               <CartModalProvider>
                 <ModalProvider>
                   <PreviewSliderProvider>
