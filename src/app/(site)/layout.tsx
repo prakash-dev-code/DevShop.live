@@ -34,8 +34,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         ) : (
           <>
             <ReduxProvider>
-              <AuthInitializer />
               <CartInitializer />
+              <AuthInitializer />
               <CartModalProvider>
                 <ModalProvider>
                   <PreviewSliderProvider>

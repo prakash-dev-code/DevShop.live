@@ -8,7 +8,7 @@ export default function CartInitializer() {
 
   useEffect(() => {
     dispatch(initializeCartFromUserData());
-  }, []);
+  }, [dispatch]);
 
   return null;
 }
