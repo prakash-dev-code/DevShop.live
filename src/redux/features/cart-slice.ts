@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import axios from 'axios';
+import { setLogin } from './auth-slice';
+import { useApi } from '@/services/apiServices';
+import { User } from '@/types/common';
 
 export type CartItem = {
   id: number | string;
@@ -22,10 +25,39 @@ const initialState: InitialState = {
   items: [],
 };
 
+interface RemoveItemPayload {
+  id: string;
+}
+
+const { getLoggedUser } = useApi();
+
+// current logged user
+
+export const fetchLoggedUserThunk = createAsyncThunk(
+  'auth/fetchLoggedUser',
+  async (_, { getState, dispatch, rejectWithValue }) => {
+    try {
+      const res = (await getLoggedUser()) as { data: { user: User } };
+      const { data } = res;
+      const { user } = data;
+      const token = localStorage.getItem('authToken');
+      if (user && token) {
+        dispatch(setLogin({ token, user }));
+      }
+      return user;
+    } catch (error) {
+      console.error('Failed to fetch logged user', error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+// current logged user
+
 // 🔁 Async thunk to sync backend cart update
 export const addToCartThunk = createAsyncThunk(
   'cart/addToCartThunk',
-  async (item: CartItem, { getState, rejectWithValue }) => {
+  async (item: CartItem, { getState, rejectWithValue, dispatch }) => {
     const state = getState() as RootState;
 
     const user =
@@ -48,12 +80,42 @@ export const addToCartThunk = createAsyncThunk(
           },
         }
       );
+      await dispatch(fetchLoggedUserThunk());
     } catch (error) {
       console.error('Failed to sync cart with server', error);
       return rejectWithValue(error);
     }
   }
 );
+
+// remove item from cart
+export const removeFromCartThunk = createAsyncThunk(
+  'cart/removeFromCartThunk',
+  async (item: RemoveItemPayload, { getState, rejectWithValue, dispatch }) => {
+    const state = getState() as RootState;
+    const user =
+      typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('authUser') || 'null') : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
+
+    if (!user || !token) return;
+
+    try {
+      await axios.delete(`http://localhost:8000/api/v1/users/cart/remove`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          productId: item.id,
+        },
+      });
+      await dispatch(fetchLoggedUserThunk());
+    } catch (error) {
+      console.error('Failed to remove item from cart', error);
+      return rejectWithValue(error);
+    }
+  }
+);
+// remove item from cart
 
 export const cart = createSlice({
   name: 'cart',
