@@ -15,6 +15,7 @@ import { setLogin } from '@/redux/features/auth-slice';
 import { User } from '@/types/common';
 import ButtonLoader from '@/components/Common/buttonLoader';
 import { useRouter } from 'next/navigation';
+import { initializeCartFromUserData } from '@/redux/features/cart-slice';
 type ForgotPasswordResponse = {
   status: 'success' | 'error'; // or just "success" if you expect only that
   message: string;
@@ -45,6 +46,7 @@ const Signin = () => {
         setLoading(false);
         if (token) {
           dispatch(setLogin({ token, user: data.user }));
+          dispatch(initializeCartFromUserData());
           toast.success('Logged in successfully');
           router.push('/');
           resetForm();
@@ -257,7 +259,7 @@ const Signin = () => {
                         </clipPath>
                       </defs>
                     </svg>
-                    Sign In with Google
+                    Continue with Google
                   </button>
 
                   {/* <button className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2">

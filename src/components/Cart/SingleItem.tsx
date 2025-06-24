@@ -1,12 +1,9 @@
-import React, { useState } from "react";
-import { AppDispatch } from "@/redux/store";
-import { useDispatch } from "react-redux";
-import {
-  removeItemFromCart,
-  updateCartItemQuantity,
-} from "@/redux/features/cart-slice";
+import React, { useState } from 'react';
+import { AppDispatch } from '@/redux/store';
+import { useDispatch } from 'react-redux';
+import { removeFromCartThunk, removeItemFromCart, updateCartItemQuantity } from '@/redux/features/cart-slice';
 
-import Image from "next/image";
+import Image from 'next/image';
 
 const SingleItem = ({ item }) => {
   const [quantity, setQuantity] = useState(item.quantity);
@@ -15,6 +12,7 @@ const SingleItem = ({ item }) => {
 
   const handleRemoveFromCart = () => {
     dispatch(removeItemFromCart(item.id));
+    dispatch(removeFromCartThunk(item));
   };
 
   const handleIncreaseQuantity = () => {
@@ -37,12 +35,21 @@ const SingleItem = ({ item }) => {
         <div className="flex items-center justify-between gap-5">
           <div className="w-full flex items-center gap-5.5">
             <div className="flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[80px] w-full h-17.5">
-              <Image width={200} height={200} src={item.imgs?.thumbnails[0]} alt="product" />
+              <Image
+                width={200}
+                height={200}
+                src={
+                  item.imgs?.thumbnails[0]
+                    ? item.imgs?.thumbnails[0]
+                    : '/images/products/product-1-sm-1.png'
+                }
+                alt="product"
+              />
             </div>
 
             <div>
               <h3 className="text-dark ease-out duration-200 hover:text-blue">
-                <a href="#"> {item.title} </a>
+                <a href="#"> {item.title || 'Product Name'} </a>
               </h3>
             </div>
           </div>

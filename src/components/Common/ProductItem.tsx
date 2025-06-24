@@ -1,20 +1,20 @@
-"use client";
-import React from "react";
-import Image from "next/image";
-import { Product } from "@/types/product";
-import { useModalContext } from "@/app/context/QuickViewModalContext";
-import { updateQuickView } from "@/redux/features/quickView-slice";
-import { addItemToCart } from "@/redux/features/cart-slice";
-import { addItemToWishlist } from "@/redux/features/wishlist-slice";
-import { updateproductDetails } from "@/redux/features/product-details";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import Link from "next/link";
+'use client';
+import React from 'react';
+import Image from 'next/image';
+import { Product } from '@/types/product';
+import { useModalContext } from '@/app/context/QuickViewModalContext';
+import { updateQuickView } from '@/redux/features/quickView-slice';
+import { addItemToCart, addToCartThunk, CartItem } from '@/redux/features/cart-slice';
+import { addItemToWishlist } from '@/redux/features/wishlist-slice';
+import { updateproductDetails } from '@/redux/features/product-details';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import Link from 'next/link';
 
 const ProductItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
 
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
@@ -22,20 +22,18 @@ const ProductItem = ({ item }: { item: Product }) => {
   };
 
   // add to cart
-  const handleAddToCart = () => {
-    dispatch(
-      addItemToCart({
-        ...item,
-        quantity: 1,
-      })
-    );
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleAdd = (item: CartItem) => {
+    dispatch(addItemToCart(item)); // UI update
+    dispatch(addToCartThunk(item)); // Backend sync
   };
 
   const handleItemToWishList = () => {
     dispatch(
       addItemToWishlist({
         ...item,
-        status: "available",
+        status: 'available',
         quantity: 1,
       })
     );
@@ -84,7 +82,7 @@ const ProductItem = ({ item }: { item: Product }) => {
           </button>
 
           <button
-            onClick={() => handleAddToCart()}
+            onClick={() => handleAdd(item)}
             className="inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] bg-blue text-white ease-out duration-200 hover:bg-blue-dark"
           >
             Add to cart
@@ -117,36 +115,11 @@ const ProductItem = ({ item }: { item: Product }) => {
 
       <div className="flex items-center gap-2.5 mb-2">
         <div className="flex items-center gap-1">
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={14}
-            height={14}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={14}
-            height={14}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={14}
-            height={14}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={14}
-            height={14}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={14}
-            height={14}
-          />
+          <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
+          <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
+          <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
+          <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
+          <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
         </div>
 
         <p className="text-custom-sm">({item.reviews})</p>
