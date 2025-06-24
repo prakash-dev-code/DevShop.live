@@ -29,7 +29,8 @@ export default function FAQs() {
                     </h3>
                     <p>
                       Select your items, proceed to checkout, enter your shipping details, and
-                      complete payment. You'll receive an order confirmation email once successful.
+                      complete payment. You&apos;ll receive an order confirmation email once
+                      successful.
                     </p>
                   </div>
 
@@ -68,8 +69,8 @@ export default function FAQs() {
                       Do you offer international shipping?
                     </h3>
                     <p>
-                      Yes, we ship worldwide. Customs fees may apply depending on your country's
-                      regulations.
+                      Yes, we ship worldwide. Customs fees may apply depending on your
+                      country&apos;s regulations.
                     </p>
                   </div>
                 </div>
@@ -82,7 +83,7 @@ export default function FAQs() {
                 <div className="space-y-6">
                   <div>
                     <h3 className="text-lg md:text-xl font-medium text-dark mb-2">
-                      What's your return policy?
+                      What&apos;s your return policy?
                     </h3>
                     <p>
                       You may return unworn, undamaged items within 30 days of delivery. Please
@@ -99,8 +100,9 @@ export default function FAQs() {
                       How do I initiate a return?
                     </h3>
                     <p>
-                      Contact our support team with your order number. We'll provide a return label
-                      and instructions. Returns typically process within 5 business days of receipt.
+                      Contact our support team with your order number. We&apos;ll provide a return
+                      label and instructions. Returns typically process within 5 business days of
+                      receipt.
                     </p>
                   </div>
                 </div>

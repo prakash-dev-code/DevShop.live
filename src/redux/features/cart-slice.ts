@@ -29,14 +29,13 @@ interface RemoveItemPayload {
   id: string;
 }
 
-const { getLoggedUser } = useApi();
-
 // current logged user
 
 export const fetchLoggedUserThunk = createAsyncThunk(
   'auth/fetchLoggedUser',
   async (_, { getState, dispatch, rejectWithValue }) => {
     try {
+      const { getLoggedUser } = useApi();
       const res = (await getLoggedUser()) as { data: { user: User } };
       const { data } = res;
       const { user } = data;
