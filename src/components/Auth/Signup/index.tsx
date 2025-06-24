@@ -1,19 +1,19 @@
-"use client";
-import Breadcrumb from "@/components/Common/Breadcrumb";
-import { useApi } from "@/services/apiServices";
-import { signUpSchema } from "@/shared/schemas/formSchema";
-import { useFormik } from "formik";
-import toast from "react-hot-toast";
-import Link from "next/link";
-import React, { useState } from "react";
-import { BsEye } from "react-icons/bs";
-import { TbEyeClosed } from "react-icons/tb";
-import { toFormikValidationSchema } from "zod-formik-adapter";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { setLogin } from "@/redux/features/auth-slice";
-import { User } from "@/types/common";
-import ButtonLoader from "@/components/Common/buttonLoader";
+'use client';
+import Breadcrumb from '@/components/Common/Breadcrumb';
+import { useApi } from '@/services/apiServices';
+import { signUpSchema } from '@/shared/schemas/formSchema';
+import { useFormik } from 'formik';
+import toast from 'react-hot-toast';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import { BsEye } from 'react-icons/bs';
+import { TbEyeClosed } from 'react-icons/tb';
+import { toFormikValidationSchema } from 'zod-formik-adapter';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { setLogin } from '@/redux/features/auth-slice';
+import { User } from '@/types/common';
+import ButtonLoader from '@/components/Common/buttonLoader';
 const Signup = () => {
   const { verifyOTP, signUp } = useApi();
   const dispatch = useDispatch();
@@ -26,14 +26,14 @@ const Signup = () => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
     validationSchema: toFormikValidationSchema(signUpSchema),
     validateOnMount: false,
-    onSubmit: async (values) => {
+    onSubmit: async values => {
       try {
         setLoading(true);
         const res = await signUp({
@@ -48,14 +48,14 @@ const Signup = () => {
           data: { user: User };
         };
         setLoading(false);
-        if (status === "success") {
+        if (status === 'success') {
           setShowOTP(true);
           toast.success((res as { message?: string }).message);
         } else {
-          toast.error((res as { message?: string }).message || "Login failed");
+          toast.error((res as { message?: string }).message || 'Login failed');
         }
       } catch (error: any) {
-        console.error("Login error:", error.message);
+        console.error('Login error:', error.message);
         toast.error(error.message);
         setLoading(false);
       }
@@ -73,14 +73,14 @@ const Signup = () => {
       setOtpLoading(false);
       if (token) {
         dispatch(setLogin({ token, user: data.user }));
-        router.push("/");
-        toast.success("Logged in successfully");
+        router.push('/');
+        toast.success('Logged in successfully');
         setOtp(null);
       } else {
-        toast.error((res as { message?: string }).message || "Login failed");
+        toast.error((res as { message?: string }).message || 'Login failed');
       }
     } catch (error: any) {
-      console.error("Verify Email error:", error.message);
+      console.error('Verify Email error:', error.message);
       toast.error(error.message);
       setOtpLoading(false);
       setOtp(null);
@@ -88,12 +88,12 @@ const Signup = () => {
   };
 
   const loginWithGoogle = () => {
-   window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}api/v1/users/auth/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}api/v1/users/auth/google`;
   };
 
   return (
     <>
-      <Breadcrumb title={"Signup"} pages={["Signup"]} />
+      <Breadcrumb title={'Signup'} pages={['Signup']} />
       {showOTP ? (
         <section className="overflow-hidden py-20 bg-gray-2">
           <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -114,7 +114,7 @@ const Signup = () => {
                 name="otp"
                 placeholder="Enter your OTP"
                 value={otp}
-                onChange={(e) => {
+                onChange={e => {
                   const value = e.target.value;
                   if (/^\d{0,6}$/.test(value)) {
                     setOtp(value);
@@ -128,9 +128,7 @@ const Signup = () => {
                 onClick={() => handleVerifyOTP()}
                 disabled={otp?.length !== 6}
                 className={`w-full flex justify-center font-medium text-white py-3 px-6 rounded-lg mt-4 ease-out duration-200 ${
-                  otp?.length === 6
-                    ? "bg-dark hover:bg-blue"
-                    : "bg-gray-5 cursor-not-allowed"
+                  otp?.length === 6 ? 'bg-dark hover:bg-blue' : 'bg-gray-5 cursor-not-allowed'
                 }`}
               >
                 Submit OTP {otpLoading && <ButtonLoader />}
@@ -198,7 +196,7 @@ const Signup = () => {
 
                     <div className="relative">
                       <input
-                        type={showPassword ? "password" : "text"}
+                        type={showPassword ? 'password' : 'text'}
                         name="password"
                         id="password"
                         onChange={formik.handleChange}
@@ -213,17 +211,11 @@ const Signup = () => {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-4 top-1/2 transform -translate-y-1/2 text-dark-5 hover:text-dark-3"
                       >
-                        {showPassword ? (
-                          <TbEyeClosed size={20} />
-                        ) : (
-                          <BsEye size={20} />
-                        )}
+                        {showPassword ? <TbEyeClosed size={20} /> : <BsEye size={20} />}
                       </button>
                     </div>
                     {formik.touched.password && formik.errors.password && (
-                      <p className="text-red text-sm">
-                        {formik.errors.password}
-                      </p>
+                      <p className="text-red text-sm">{formik.errors.password}</p>
                     )}
                   </div>
 
@@ -233,7 +225,7 @@ const Signup = () => {
                     </label>
                     <div className="relative">
                       <input
-                        type={showConfirmPassword ? "password" : "text"}
+                        type={showConfirmPassword ? 'password' : 'text'}
                         name="confirmPassword"
                         id="confirmPassword"
                         placeholder="Confirm  password"
@@ -245,35 +237,22 @@ const Signup = () => {
                       />
                       <button
                         type="button"
-                        onClick={() =>
-                          setShowConfirmPassword(!showConfirmPassword)
-                        }
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         className="absolute right-4 top-1/2 transform -translate-y-1/2 text-dark-5 hover:text-dark-3"
                       >
-                        {showConfirmPassword ? (
-                          <TbEyeClosed size={20} />
-                        ) : (
-                          <BsEye size={20} />
-                        )}
+                        {showConfirmPassword ? <TbEyeClosed size={20} /> : <BsEye size={20} />}
                       </button>
                     </div>
-                    {formik.touched.confirmPassword &&
-                      formik.errors.confirmPassword && (
-                        <p className="text-red text-sm">
-                          {formik.errors.confirmPassword}
-                        </p>
-                      )}
+                    {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+                      <p className="text-red text-sm">{formik.errors.confirmPassword}</p>
+                    )}
                   </div>
 
                   <button
                     type="submit"
                     disabled={!formik.isValid || formik.isSubmitting}
                     className={`w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 mt-7.5
-    ${
-      !formik.isValid || formik.isSubmitting
-        ? "opacity-50 cursor-not-allowed"
-        : "hover:bg-blue"
-    }`}
+    ${!formik.isValid || formik.isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue'}`}
                   >
                     Create Account {loading && <ButtonLoader />}
                   </button>
@@ -332,7 +311,7 @@ const Signup = () => {
                       </clipPath>
                     </defs>
                   </svg>
-                  Sign Up with Google
+                  Continue with Google
                 </button>
 
                 {/* <button className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2">

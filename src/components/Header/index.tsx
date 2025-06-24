@@ -1,29 +1,29 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import CustomSelect from "./CustomSelect";
-import { menuData } from "./menuData";
-import Dropdown from "./Dropdown";
-import { useAppSelector } from "@/redux/store";
-import { useSelector } from "react-redux";
-import { selectTotalPrice } from "@/redux/features/cart-slice";
-import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
-import Image from "next/image";
-import CustomSignIn from "./CustomSignIn";
-import { HiShoppingBag } from "react-icons/hi";
-import { FiLogIn } from "react-icons/fi";
-import { LuUserPlus } from "react-icons/lu";
-import { CgProfile } from "react-icons/cg";
-import { GoHeart } from "react-icons/go";
-import { IoGiftOutline } from "react-icons/io5";
+'use client';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import CustomSelect from './CustomSelect';
+import { menuData } from './menuData';
+import Dropdown from './Dropdown';
+import { useAppSelector } from '@/redux/store';
+import { useSelector } from 'react-redux';
+import { selectTotalPrice } from '@/redux/features/cart-slice';
+import { useCartModalContext } from '@/app/context/CartSidebarModalContext';
+import Image from 'next/image';
+import CustomSignIn from './CustomSignIn';
+import { HiShoppingBag } from 'react-icons/hi';
+import { FiLogIn } from 'react-icons/fi';
+import { LuUserPlus } from 'react-icons/lu';
+import { CgProfile } from 'react-icons/cg';
+import { GoHeart } from 'react-icons/go';
+import { IoGiftOutline } from 'react-icons/io5';
 
 const Header = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
   const { openCartModal } = useCartModalContext();
 
-  const product = useAppSelector((state) => state.cartReducer.items);
+  const product = useAppSelector(state => state.cartReducer.items);
   const totalPrice = useSelector(selectTotalPrice);
 
   const handleOpenCartModal = () => {
@@ -40,56 +40,54 @@ const Header = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleStickyMenu);
+    window.addEventListener('scroll', handleStickyMenu);
   });
 
   const options = [
-    { label: "All Categories", value: "0" },
-    { label: "Desktop", value: "1" },
-    { label: "Laptop", value: "2" },
-    { label: "Monitor", value: "3" },
-    { label: "Phone", value: "4" },
-    { label: "Watch", value: "5" },
-    { label: "Mouse", value: "6" },
-    { label: "Tablet", value: "7" },
+    { label: 'All Categories', value: '0' },
+    { label: 'Desktop', value: '1' },
+    { label: 'Laptop', value: '2' },
+    { label: 'Monitor', value: '3' },
+    { label: 'Phone', value: '4' },
+    { label: 'Watch', value: '5' },
+    { label: 'Mouse', value: '6' },
+    { label: 'Tablet', value: '7' },
   ];
 
-  
-
   const signInoptions = [
-    { label: "Sign In", value: "/signin",icon: <FiLogIn size={18} color="blue" />},
-    { label: "Sign Up", value: "/signup",icon: <LuUserPlus size={18} color="blue" /> },
-    { label: "My Profile", value: "/my-account",icon: <CgProfile size={18} color="blue" /> },
-    { label: "Orders", value: "/orders",icon: <HiShoppingBag size={18} color="blue" /> },
-    { label: "Wishlist", value: "/wishlist" ,icon: <GoHeart size={18} color="blue"/>},
-    { label: "Rewards", value: "/rewards" ,icon: <IoGiftOutline  size={18} color="blue"/>},
+    { label: 'Sign In', value: '/signin', icon: <FiLogIn size={18} color="blue" /> },
+    { label: 'Sign Up', value: '/signup', icon: <LuUserPlus size={18} color="blue" /> },
+    { label: 'My Profile', value: '/my-account', icon: <CgProfile size={18} color="blue" /> },
+    { label: 'Orders', value: '/orders', icon: <HiShoppingBag size={18} color="blue" /> },
+    { label: 'Wishlist', value: '/wishlist', icon: <GoHeart size={18} color="blue" /> },
+    { label: 'Rewards', value: '/rewards', icon: <IoGiftOutline size={18} color="blue" /> },
   ];
 
   return (
     <header
       className={`fixed left-0 top-0 w-full z-9999 bg-white transition-all ease-in-out duration-300 ${
-        stickyMenu && "shadow"
+        stickyMenu && 'shadow'
       }`}
     >
       <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0">
         {/* <!-- header top start --> */}
         <div
           className={`flex flex-col lg:flex-row gap-5 items-end lg:items-center xl:justify-between ease-out duration-200 ${
-            stickyMenu ? "py-4" : "py-6"
+            stickyMenu ? 'py-4' : 'py-6'
           }`}
         >
           {/* <!-- header top left --> */}
           <div className="xl:w-auto flex-col sm:flex-row w-full flex sm:justify-between sm:items-center gap-5 sm:gap-10">
             <Link className="flex-shrink-0" href="/">
-             <div className="w-full h-[46px]">
-             <Image
-                src="/images/logo/logo.svg"
-                alt="Logo"
-                width={180}
-                height={46}
-                className=""
-              />
-             </div>
+              <div className="w-full h-[46px]">
+                <Image
+                  src="/images/logo/logo.svg"
+                  alt="Logo"
+                  width={180}
+                  height={46}
+                  className=""
+                />
+              </div>
             </Link>
 
             <div className="max-w-[475px] w-full">
@@ -101,7 +99,7 @@ const Header = () => {
                     {/* <!-- divider --> */}
                     <span className="absolute left-0 top-1/2 -translate-y-1/2 inline-block w-px h-5.5 bg-gray-4"></span>
                     <input
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={e => setSearchQuery(e.target.value)}
                       value={searchQuery}
                       type="search"
                       name="search"
@@ -165,12 +163,8 @@ const Header = () => {
               </svg>
 
               <div>
-                <span className="block text-2xs text-dark-4 uppercase">
-                  24/7 SUPPORT
-                </span>
-                <p className="font-medium text-custom-sm text-dark">
-                  (+91) 9644764505
-                </p>
+                <span className="block text-2xs text-dark-4 uppercase">24/7 SUPPORT</span>
+                <p className="font-medium text-custom-sm text-dark">(+91) 9644764505</p>
               </div>
             </div>
 
@@ -181,10 +175,7 @@ const Header = () => {
               <div className="flex items-center gap-5">
                 <CustomSignIn options={signInoptions} />
 
-                <button
-                  onClick={handleOpenCartModal}
-                  className="flex items-center gap-2.5"
-                >
+                <button onClick={handleOpenCartModal} className="flex items-center gap-2.5">
                   <span className="inline-block relative">
                     <svg
                       width="24"
@@ -223,12 +214,8 @@ const Header = () => {
                   </span>
 
                   <div>
-                    <span className="block text-2xs text-dark-4 uppercase">
-                      cart
-                    </span>
-                    <p className="font-medium text-custom-sm text-dark">
-                      ${totalPrice}
-                    </p>
+                    <span className="block text-2xs text-dark-4 uppercase">cart</span>
+                    <p className="font-medium text-custom-sm text-dark">${totalPrice}</p>
                   </div>
                 </button>
               </div>
@@ -244,17 +231,17 @@ const Header = () => {
                   <span className="du-block absolute right-0 w-full h-full">
                     <span
                       className={`block relative top-0 left-0 bg-dark rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-[0] ${
-                        !navigationOpen && "!w-full delay-300"
+                        !navigationOpen && '!w-full delay-300'
                       }`}
                     ></span>
                     <span
                       className={`block relative top-0 left-0 bg-dark rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-150 ${
-                        !navigationOpen && "!w-full delay-400"
+                        !navigationOpen && '!w-full delay-400'
                       }`}
                     ></span>
                     <span
                       className={`block relative top-0 left-0 bg-dark rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-200 ${
-                        !navigationOpen && "!w-full delay-500"
+                        !navigationOpen && '!w-full delay-500'
                       }`}
                     ></span>
                   </span>
@@ -262,12 +249,12 @@ const Header = () => {
                   <span className="block absolute right-0 w-full h-full rotate-45">
                     <span
                       className={`block bg-dark rounded-sm ease-in-out duration-200 delay-300 absolute left-2.5 top-0 w-0.5 h-full ${
-                        !navigationOpen && "!h-0 delay-[0] "
+                        !navigationOpen && '!h-0 delay-[0] '
                       }`}
                     ></span>
                     <span
                       className={`block bg-dark rounded-sm ease-in-out duration-200 delay-400 absolute left-0 top-2.5 w-full h-0.5 ${
-                        !navigationOpen && "!h-0 dealy-200"
+                        !navigationOpen && '!h-0 dealy-200'
                       }`}
                     ></span>
                   </span>
@@ -295,11 +282,7 @@ const Header = () => {
                 <ul className="flex xl:items-center flex-col xl:flex-row gap-5 xl:gap-6">
                   {menuData.map((menuItem, i) =>
                     menuItem.submenu ? (
-                      <Dropdown
-                        key={i}
-                        menuItem={menuItem}
-                        stickyMenu={stickyMenu}
-                      />
+                      <Dropdown key={i} menuItem={menuItem} stickyMenu={stickyMenu} />
                     ) : (
                       <li
                         key={i}
@@ -308,10 +291,10 @@ const Header = () => {
                         <Link
                           href={menuItem.path}
                           className={`hover:text-blue text-custom-sm font-medium text-dark flex ${
-                            stickyMenu ? "xl:py-4" : "xl:py-6"
+                            stickyMenu ? 'xl:py-4' : 'xl:py-6'
                           }`}
                         >
-                           {menuItem.title}
+                          {menuItem.title}
                         </Link>
                       </li>
                     )
