@@ -1,19 +1,11 @@
-"use client";
-import { setLogout } from "@/redux/features/auth-slice";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
-import toast from "react-hot-toast";
-import {
-  FiShoppingCart,
-  FiPackage,
-  FiUsers,
-  FiHome,
-  FiLogOut,
-  FiMenu,
-  FiX,
-} from "react-icons/fi";
-import { useDispatch } from "react-redux";
+'use client';
+import { setLogout } from '@/redux/features/auth-slice';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+import { FiShoppingCart, FiPackage, FiUsers, FiHome, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
@@ -22,18 +14,16 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
 
   const navItems = [
-    { link: "/dashboard", icon: FiHome, label: "Dashboard" },
-    { link: "/dashboard/products", icon: FiPackage, label: "Products" },
-    { link: "/dashboard/orders", icon: FiShoppingCart, label: "Orders" },
-    { link: "/dashboard/users", icon: FiUsers, label: "Users" },
+    { link: '/dashboard', icon: FiHome, label: 'Dashboard' },
+    { link: '/dashboard/products', icon: FiPackage, label: 'Products' },
+    { link: '/dashboard/orders', icon: FiShoppingCart, label: 'Orders' },
+    { link: '/dashboard/users', icon: FiUsers, label: 'Users' },
   ];
 
   const handleOptionClick = () => {
     dispatch(setLogout());
-
-    router.push("/signin");
-
-    toast.success("Logged out successfully");
+    router.push('/signin');
+    toast.success('Logged out successfully');
     return;
   };
 
@@ -44,7 +34,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         className={`
           fixed z-40 top-0 left-0 h-full w-64 bg-[#000] border-r border-gray-700 p-4 
           transform transition-transform duration-300 ease-in-out
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
           md:translate-x-0 md:static md:block
         `}
       >
@@ -56,15 +46,15 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
 
         <nav className="space-y-2">
-          {navItems.map((item) => (
+          {navItems.map(item => (
             <Link
               key={item.link}
               href={item.link}
               onClick={() => setSidebarOpen(false)} // close on mobile tap
               className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
                 pathname === item.link
-                  ? "bg-green-600 text-white"
-                  : "text-gray-300 hover:bg-gray-700"
+                  ? 'bg-green-600 text-white'
+                  : 'text-gray-300 hover:bg-gray-700'
               }`}
             >
               <item.icon size={20} />
@@ -107,7 +97,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-4 overflow-auto">{children}</main>
+        <main className="flex-1  overflow-auto">{children}</main>
       </div>
     </div>
   );

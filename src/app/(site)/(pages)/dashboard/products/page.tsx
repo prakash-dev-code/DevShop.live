@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { FiEdit, FiPlus, FiTrash2 } from 'react-icons/fi';
-import DefaultImage from '@/../public/images/products/Product-default.png';
+// import DefaultImage from '@/../public/images/products/Product-default.png';
 // import { useDeleteProduct } from "@/lib/hooks";
 import Image from 'next/image';
 // import { IImage, Product } from "@/types/product";
@@ -76,13 +76,13 @@ const ProductListPage = () => {
                     {/* <td className="py-4 text-gray-300">{product.id}</td> */}
                     <td className="py-4 text-gray-300">{product.name}</td>
                     <td className="py-4 text-gray-300 flex gap-2">
-                      <Image
+                      {/* <Image
                         src={product?.images[0]?.url ? product?.images[0]?.url : DefaultImage}
                         alt="Product Image"
                         height={200}
                         width={200}
                         className="w-10 h-auto object-contain"
-                      />
+                      /> */}
                     </td>
                     <td className="py-4 text-gray-300">{product.category}</td>
                     {/* <td className="py-4 text-gray-300">${product.price}</td> */}

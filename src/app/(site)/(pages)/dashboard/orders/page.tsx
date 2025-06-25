@@ -1,31 +1,32 @@
-"use client";
-import { useApi } from "@/services/apiServices";
-import { formatToDayMonthYear } from "@/utils/dateFormat";
-import React, { useState } from "react";
-import toast from "react-hot-toast";
+'use client';
+import { useApi } from '@/services/apiServices';
+// import { formatToDayMonthYear } from "@/utils/dateFormat";
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 // import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
-import { useQuery } from "react-query";
+// import { useQuery } from "react-query";
 
 const Page = () => {
-  const { getOrders } = useApi();
-  const {
-    data: orders = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery<any>("orders", getOrders, {
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
+  const [ordersData, setOrdersData] = useState<any[]>([]);
+  // const { getOrders } = useApi();
+  // const {
+  //   data: orders = [],
+  //   isLoading,
+  //   isError,
+  //   error,
+  // } = useQuery<any>("orders", getOrders, {
+  //   refetchOnWindowFocus: false,
+  //   refetchOnMount: false,
+  //   refetchOnReconnect: false,
 
-    onError: (err: any) => {
-      console.error("Fetch products error:", err.message);
-      toast.error(
-        err.response?.data?.message || err.message || "Failed to fetch products"
-      );
-    },
-  });
-  const ordersData = orders.data?.doc || [];
+  //   onError: (err: any) => {
+  //     console.error("Fetch products error:", err.message);
+  //     toast.error(
+  //       err.response?.data?.message || err.message || "Failed to fetch products"
+  //     );
+  //   },
+  // });
+  // const ordersData = orders.data?.doc || [];
   return (
     <div className="md:p-6">
       <div className="flex justify-between items-center mb-6">
@@ -57,21 +58,19 @@ const Page = () => {
                   <td className="py-4">
                     <span
                       className={`px-2 py-1 rounded text-xs ${
-                        order.status === "delivered"
-                          ? "text-white bg-green"
-                          : order.status === "on-hold"
-                          ? "text-white bg-red"
-                          : order.status === "processing"
-                          ? "text-white bg-yellow"
-                          : "Unknown Status"
+                        order.status === 'delivered'
+                          ? 'text-white bg-green'
+                          : order.status === 'on-hold'
+                            ? 'text-white bg-red'
+                            : order.status === 'processing'
+                              ? 'text-white bg-yellow'
+                              : 'Unknown Status'
                       }`}
                     >
                       {order.status}
                     </span>
                   </td>
-                  <td className="py-4 text-gray-300">
-                    {formatToDayMonthYear(order.createdAt)}
-                  </td>
+                  {/* <td className="py-4 text-gray-300">{formatToDayMonthYear(order.createdAt)}</td> */}
                   {/* <td className="py-4 text-gray-300">{order.method}</td> */}
                   {/* <td className="py-4">
                     <div className="flex gap-2">
