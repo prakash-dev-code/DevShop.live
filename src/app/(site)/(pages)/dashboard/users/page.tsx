@@ -1,5 +1,4 @@
 'use client';
-
 import TableLoader from '@/components/Common/tableLoader';
 import { useApi } from '@/services/apiServices';
 import Link from 'next/link';

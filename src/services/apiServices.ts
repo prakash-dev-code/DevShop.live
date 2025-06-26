@@ -38,6 +38,14 @@ const updateUser = async (body: any, id: string) => {
   return apiMethod(`api/v1/users/${id}`, 'patch', body, true);
 };
 
+const getAllProducts = async (page = 1, limit = 10, name = '') => {
+  const query = `page=${page}&limit=${limit}${name ? `&name=${encodeURIComponent(name)}` : ''}`;
+  return apiMethod(`api/v1/products?${query}`, 'get', {});
+};
+
+const deleteProduct = async (id: string) => {
+  return apiMethod(`api/v1/products/${id}`, 'delete', {}, true);
+};
 export const useApi = () => ({
   signIN,
   forgerPassword,
@@ -49,4 +57,6 @@ export const useApi = () => ({
   getAllUser,
   deleteUser,
   updateUser,
+  getAllProducts,
+  deleteProduct,
 });

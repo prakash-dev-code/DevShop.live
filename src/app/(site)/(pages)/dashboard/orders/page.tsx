@@ -1,5 +1,6 @@
 'use client';
 import { useApi } from '@/services/apiServices';
+import Link from 'next/link';
 // import { formatToDayMonthYear } from "@/utils/dateFormat";
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -30,11 +31,13 @@ const Page = () => {
   return (
     <div className="md:p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-white">Orders</h1>
-        {/* <button className="bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-green-700">
-          <FiPlus size={16} />
-          Add Order
-        </button> */}
+        <ul className="flex items-center gap-2">
+          <li className="text-custom-sm hover:text-blue">
+            <Link href="/dashboard">Home /</Link>
+          </li>
+
+          <li className="text-custom-sm last:text-blue capitalize">Orders</li>
+        </ul>
       </div>
 
       <div className="bg-gray-800 p-6 rounded-lg">
@@ -70,24 +73,6 @@ const Page = () => {
                       {order.status}
                     </span>
                   </td>
-                  {/* <td className="py-4 text-gray-300">{formatToDayMonthYear(order.createdAt)}</td> */}
-                  {/* <td className="py-4 text-gray-300">{order.method}</td> */}
-                  {/* <td className="py-4">
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleEdit("orders", order)}
-                        className="text-blue-400 hover:text-blue-300"
-                      >
-                        <FiEdit size={16} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete("orders", order.id)}
-                        className="text-red-400 hover:text-red-300"
-                      >
-                        <FiTrash2 size={16} />
-                      </button>
-                    </div>
-                  </td> */}
                 </tr>
               ))}
             </tbody>
