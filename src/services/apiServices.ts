@@ -30,6 +30,10 @@ const getAllUser = async (page = 1, limit = 10, name = '') => {
   return apiMethod(`api/v1/users?${query}`, 'get', {}, true);
 };
 
+const deleteUser = async (id: string) => {
+  return apiMethod(`api/v1/users/${id}`, 'delete', {}, true);
+};
+
 export const useApi = () => ({
   signIN,
   forgerPassword,
@@ -39,4 +43,5 @@ export const useApi = () => ({
   changePassword,
   getLoggedUser,
   getAllUser,
+  deleteUser,
 });

@@ -10,13 +10,13 @@ import toast from 'react-hot-toast';
 import { FiEdit, FiPlus, FiTrash2 } from 'react-icons/fi';
 
 const Page = () => {
-  const { getAllUser } = useApi();
+  const { getAllUser, deleteUser } = useApi();
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<any[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState<any>(0);
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -65,20 +65,18 @@ const Page = () => {
     console.log('Edit user:', user);
   };
 
-  const handleDelete = async (type: string, id: string) => {
-    if (confirm('Are you sure to delete this user?')) {
-      // try {
-      //   setLoading(true);
-      //   // Call your delete API here
-      //   // await deleteUser(id);
-      //   setLoading(false);
-      //   toast.success('User deleted successfully');
-      //   fetchUsers(); // Refresh the user list
-      // } catch (error: any) {
-      //   console.error('Delete user error:', error.message);
-      //   toast.error(error.message || 'Failed to delete user');
-      //   setLoading(false);
-      // }
+  const handleDelete = async (id: string) => {
+    try {
+      setLoading(true);
+
+      await deleteUser(id);
+      setLoading(false);
+      toast.success('User deleted successfully');
+      fetchUsers();
+    } catch (error: any) {
+      console.error('Delete user error:', error.message);
+      toast.error(error.message || 'Failed to delete user');
+      setLoading(false);
     }
   };
 
@@ -196,7 +194,6 @@ const Page = () => {
                             <FiEdit size={16} />
                           </button>
                           <button
-                            // onClick={() => handleDelete('users', user.id)}
                             onClick={() => {
                               setIsModalOpen(true);
                               setSelectedUserId(user.id);
@@ -292,7 +289,7 @@ const Page = () => {
               </button>
               <button
                 onClick={() => {
-                  if (selectedUserId) handleDelete('users', selectedUserId);
+                  if (selectedUserId) handleDelete(selectedUserId);
                   setIsModalOpen(false);
                 }}
                 className="bg-red hover:bg-red shadow-lg hover:scale-95 duration-150 text-white font-medium  py-1.5 px-4 rounded"
