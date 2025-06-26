@@ -1,23 +1,24 @@
 'use client';
-import Breadcrumb from '@/components/Common/Breadcrumb';
-import ButtonLoader from '@/components/Common/buttonLoader';
-import PreLoader from '@/components/Common/PreLoader';
+
 import TableLoader from '@/components/Common/tableLoader';
 import { useApi } from '@/services/apiServices';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { FiEdit, FiPlus, FiTrash2 } from 'react-icons/fi';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
 
 const Page = () => {
-  const { getAllUser, deleteUser } = useApi();
+  const { getAllUser, deleteUser, updateUser } = useApi();
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<any[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState<any>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModal, setIsEditModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [editedName, setEditedName] = useState('');
+  const [editedRole, setEditedRole] = useState('user'); // Default role
   const modalRef = useRef<HTMLDivElement>(null);
 
   const limit = 10;
@@ -59,24 +60,27 @@ const Page = () => {
     return () => clearTimeout(delayDebounce);
   }, [searchValue]);
 
-  const handleEdit = (type: string, user: any) => {
-    // Navigate to edit page with user data
-    // For example, you can use router.push(`/dashboard/${type}/edit/${user.id}`);
-    console.log('Edit user:', user);
+  const handleEdit = async (id: string, name: string, role: string) => {
+    try {
+      await updateUser({ name, role }, id);
+
+      toast.success('User updated successfully');
+      fetchUsers();
+    } catch (error: any) {
+      console.error('Delete user error:', error.message);
+      toast.error(error.message || 'Failed to delete user');
+    }
   };
 
   const handleDelete = async (id: string) => {
     try {
-      setLoading(true);
-
       await deleteUser(id);
-      setLoading(false);
+
       toast.success('User deleted successfully');
       fetchUsers();
     } catch (error: any) {
       console.error('Delete user error:', error.message);
       toast.error(error.message || 'Failed to delete user');
-      setLoading(false);
     }
   };
 
@@ -84,10 +88,11 @@ const Page = () => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         setIsModalOpen(false);
+        setIsEditModal(false);
       }
     };
 
-    if (isModalOpen) {
+    if (isModalOpen || isEditModal) {
       document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -96,7 +101,7 @@ const Page = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isModalOpen]);
+  }, [isModalOpen, isEditModal]);
 
   return (
     <>
@@ -188,7 +193,12 @@ const Page = () => {
                       <td className="py-4">
                         <div className="flex gap-2">
                           <button
-                            onClick={() => handleEdit('users', user)}
+                            onClick={() => {
+                              setSelectedUserId(user.id);
+                              setEditedName(user?.name);
+                              setEditedRole(user?.role);
+                              setIsEditModal(true);
+                            }}
                             className="text-blue-light hover:text-blue-dark"
                           >
                             <FiEdit size={16} />
@@ -297,6 +307,69 @@ const Page = () => {
                 Delete
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {isEditModal && (
+        <div
+          key="modal"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 shadow-2xl"
+        >
+          <div ref={modalRef} className="bg-white rounded-lg p-6 shadow-lg w-[90%] max-w-md">
+            <h2 className="text-lg font-medium mb-4 text-dark">Edit User</h2>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                handleEdit(selectedUserId, editedName, editedRole);
+                setIsEditModal(false);
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <label className="block text-sm font-medium text-gray-7 mb-1">Name</label>
+                <input
+                  type="text"
+                  value={editedName}
+                  onChange={e => setEditedName(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-light-3"
+                  placeholder="Enter user name"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-7 mb-1">Role</label>
+                <select
+                  value={editedRole}
+                  onChange={e => setEditedRole(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-light-3"
+                  required
+                >
+                  {['admin', 'user', 'staff', 'employee', 'manager'].map(role => (
+                    <option key={role} value={role}>
+                      {role}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsEditModal(false)}
+                  className="bg-gray-4 shadow-lg hover:scale-95 text-gray-700 font-medium duration-150 py-1.5 px-4 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue text-white shadow-lg hover:scale-95 duration-150 font-medium py-1.5 px-4 rounded"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

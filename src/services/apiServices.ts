@@ -34,6 +34,10 @@ const deleteUser = async (id: string) => {
   return apiMethod(`api/v1/users/${id}`, 'delete', {}, true);
 };
 
+const updateUser = async (body: any, id: string) => {
+  return apiMethod(`api/v1/users/${id}`, 'patch', body, true);
+};
+
 export const useApi = () => ({
   signIN,
   forgerPassword,
@@ -44,4 +48,5 @@ export const useApi = () => ({
   getLoggedUser,
   getAllUser,
   deleteUser,
+  updateUser,
 });
