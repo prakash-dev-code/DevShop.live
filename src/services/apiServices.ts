@@ -46,6 +46,10 @@ const getAllProducts = async (page = 1, limit = 10, name = '') => {
 const deleteProduct = async (id: string) => {
   return apiMethod(`api/v1/products/${id}`, 'delete', {}, true);
 };
+
+const createProduct = async (body: any) => {
+  return apiMethod(`api/v1/products/`, 'post', body, true);
+};
 export const useApi = () => ({
   signIN,
   forgerPassword,
@@ -59,4 +63,5 @@ export const useApi = () => ({
   updateUser,
   getAllProducts,
   deleteProduct,
+  createProduct,
 });
