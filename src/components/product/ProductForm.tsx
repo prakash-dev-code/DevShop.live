@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import { Product } from '@/types/product';
 import Image from 'next/image';
 import { useApi } from '@/services/apiServices';
+import ButtonLoader from '../Common/buttonLoader';
 
 type ProductFormProps = {
   initialData?: Product;
@@ -46,18 +47,15 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData, mode }) => {
   const router = useRouter();
   const { id } = useParams() as { id: string };
 
-  const { createProduct } = useApi();
-
-  // const updateProduct = useUpdateProduct();
-  // const createProduct = useCreateProduct();
+  const { createProduct, updateProduct } = useApi();
 
   useEffect(() => {
     if (initialData) {
       const cleanData = {
         ...initialData,
-        price: initialData.price.toString(),
-        discountedPrice: initialData.discountedPrice.toString(),
-        stock: initialData.stock.toString(),
+        price: initialData.price,
+        discountedPrice: initialData.discountedPrice,
+        stock: initialData.stock,
         images: initialData.images || [],
       };
       //@ts-ignore
@@ -117,42 +115,25 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData, mode }) => {
     });
 
     try {
-      await createProduct(formDataToSend); // 👈 Axios API call
+      setLoading(true);
+      if (mode === 'edit' && id) {
+        await updateProduct(id, formDataToSend); // 👈 Axios API call
+        setLoading(false);
+        toast.success('Product updated successfully!');
+        router.push('/dashboard/products');
+        return;
+      } else {
+        await createProduct(formDataToSend); // 👈 Axios API call
+      }
+      setLoading(false);
       toast.success('Product created successfully!');
       router.push('/dashboard/products');
     } catch (error: any) {
+      setLoading(false);
       console.error('Creation failed:', error);
       toast.error(error.message || 'Creation failed.');
     }
-
-    // if (mode === 'edit') {
-    //   updateProduct.mutate(
-    //     { id, data: formDataToSend },
-    //     {
-    //       onSuccess: () => {
-    //         toast.success('Product updated!');
-    //         router.push('/dashboard/products');
-    //       },
-    //       onError: () => {
-    //         toast.error('Update failed.');
-    //       },
-    //     }
-    //   );
-    // } else {
-    //   createProduct.mutate(formDataToSend, {
-    //     onSuccess: () => {
-    //       toast.success('Product created!');
-    //       router.push('/dashboard/products');
-    //     },
-    //     onError: () => {
-    //       toast.error('Creation failed.');
-    //     },
-    //   });
-    // }
   };
-  console.log('Form Data to Send:', formData);
-
-  // const loading = mode === 'edit' ? updateProduct.isLoading : createProduct.isLoading;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 w-full text-white">
@@ -243,11 +224,16 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData, mode }) => {
             </button>
           </div>
         ))}
-        <input type="file" accept="image/*" onChange={handleImageUpload} className="mt-2" />
+        <input type="file" accept="image/*" onChange={handleImageUpload} className="mt-2 mb-4" />
       </div>
 
-      <button type="submit" className="w-full bg-blue text-white rounded py-2" disabled={loading}>
-        {loading ? 'Saving...' : mode === 'edit' ? 'Update Product' : 'Add Product'}
+      <button
+        type="submit"
+        className="w-[20%] bg-blue flex justify-center ml-auto text-white rounded py-3 "
+        disabled={loading}
+      >
+        {loading ? <ButtonLoader /> : mode === 'edit' ? 'Update Product' : 'Add Product'}
+        {/* <ButtonLoader /> */}
       </button>
     </form>
   );

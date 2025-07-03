@@ -53,13 +53,17 @@ const ProductListPage = () => {
   const totalPages = Math.ceil(totalCount / limit);
 
   useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      setCurrentPage(1);
-      fetchProducts();
-    }, 500);
+    const delayDebounce = setTimeout(
+      () => {
+        fetchProducts();
+      },
+      searchValue ? 800 : 0
+    ); // debounce only on search
 
     return () => clearTimeout(delayDebounce);
-  }, [searchValue]);
+  }, [currentPage, searchValue]);
+
+  console.log('search', searchValue);
 
   const handleDelete = async (id: string) => {
     try {
